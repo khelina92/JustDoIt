@@ -33,5 +33,10 @@ folders to categorize tasks,
  Login feature,
  Velge hvor lenge en task skal vare,
  Reward system,
- En måte å holde spor på hvor mange du har klart/ikke klart.
+ En måte å holde spor på hvor mange du har klart/ikke klart,
+ cheack lists,
+ dato/klokkeslett,
+ inlogging,
+ 
+
 
