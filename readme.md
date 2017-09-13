@@ -2,9 +2,12 @@
 <br>
 Medlemmer av gruppen
 <br>
+<br>
 * Keilin 
 [http://https://github.com/khelina92 KeilinsGitBruker]
+<br>
 * Julie
 [https://github.com/JulieMad91 JulieGitBruker]
+<br>
 * Marius 
 [https://github.com/Jakplayz MariusGitBruker]
