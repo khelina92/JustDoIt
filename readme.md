@@ -1,6 +1,7 @@
 <div class="center" style="width: auto; margin-left: auto; margin-right: auto;">JustDoIt</div>
-{{break}}
-==Medlemmer av gruppen==
+<br>
+Medlemmer av gruppen
+<br>
 * Keilin 
 [http://https://github.com/khelina92 KeilinsGitBruker]
 * Julie
