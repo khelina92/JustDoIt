@@ -16,9 +16,9 @@ Medlemmer av gruppen
 Roadmap: [https://trello.com/b/zbTcZBJE/story-map]
 
 <br>
-Viktig
 <br>
 Vi ønsker å lage en optimalisert tilpasset todolist for Keilin som gir henne mulighet til å ha oversikt over sin hektiske hverdag
+<br>
 <br>
 Dette innebærer:
 <br>
