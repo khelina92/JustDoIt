@@ -29,3 +29,7 @@ Dette innebærer:
 * Spotifytilgang / mulighet til å høre på musikk ect. 
 Uniqe sellingpoints: 
 * Avspilling av musikk i selve appen, som er koblet opp mot spotify
+
+Link til heroku:
+<br>
+https://serverjustdoit.herokuapp.com/

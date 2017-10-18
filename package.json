@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/khelina92/JustDoIt/issues"
   },
-  "homepage": "https://github.com/khelina92/JustDoIt#readme"
+  "homepage": "https://github.com/khelina92/JustDoIt#readme",
+  "dependencies": {
+    "pg": "7.3.0"
+  }
 }
