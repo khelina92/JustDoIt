@@ -3,13 +3,13 @@ DataStructure
 
 Schema: 
 {
-    higscores:{
+    Liste:{
         "type":"array"
         "items":[
             {
              "name":{"type":"string"},
-             "score":{"type":"integer"},
-             "timestamp":{"type":"string"}  
+             "Dato":{"type":"dato"},
+             "beskrivelse":{"type":"string"}
             }
         ]
     }
@@ -17,7 +17,7 @@ Schema:
 
 Example: 
 {
-    highscores:[
-        {"name":"Christian", "score":100, "timestamp":"123456789"}
+    Liste:[
+        {"name":"Keilin", "dato":30.10.17, "beskrivelse":"Julegaver"}
     ]
 }
