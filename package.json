@@ -1,0 +1,24 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "mit eksemple på server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+     "start":"node server.js" 
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "server",
+    "test"
+  ],
+  "author": "Marius Jakobsen",
+  "license": "ISC",
+  "dependencies": {
+    "cool-ascii-faces": "1.3.4",
+    "express": "^4.16.2"
+  }
+}
