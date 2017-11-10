@@ -1,0 +1,76 @@
+
+
+body {
+    background-image: url(images/trianglepattern.jpg);
+}
+
+
+#box1{
+    text-align: center;
+    border-radius: 20px;
+    border-color:darkcyan;
+    border-style:groove;
+    box-shadow: 3px 5px 10px #888888;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 50px;
+    background-color: #ffffff;
+    opacity: 0.9;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    
+}
+
+#velkommen{
+    font-family:sans-serif;
+    color:darkgreen;
+    
+}
+
+input, button{
+    box-sizing: border-box;
+    width: 500px;;
+    margin-bottom: 5px;
+    height: 40px;
+    font-size: 14pt;
+    padding-left: 4px;
+    background-color: 
+        
+        
+}
+
+img{
+    width: 100px;
+}
+
+h1{
+    text-align: center;
+    
+}
+
+#innlogging{
+    text-align: center;
+}
+
+
+
+input, button {
+         box-sizing: border-box;
+         align-content: center;
+         width: 60%;;
+         margin-bottom: 5px;
+         height: 40px;
+         font-size: 14pt;
+         padding-left: 4px;
+         background-color: 
+        
+        
+    }
+    
+    img {
+        width: 50px;
+    }
+      
+    #index{
+         text-align: center;
+    }
