@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>text in-out template</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="box1">
+    <h1 id="velkommen">Opprett ny bruker</h1>
+    <input id="inplogin" placeholder="Login name" />
+    <input id="inppassw" placeholder="Password" type="password" />
+    <input id="inpfulln" placeholder="Full name" />
+    <input id="inpfile" type="file" value="Select image file" />    
+    <button id="btncreate">Create user</button>
+    <br>
+    <div id="txtOut">The result...</div>   
+    </div>
+</body>
+    
+<script>
+    
+    // init ------------------------------------------ 
+    var inplogin  = document.getElementById("inplogin");
+    var inppassw  = document.getElementById("inppassw");
+    var inpfulln  = document.getElementById("inpfulln");
+    var inpfile   = document.getElementById("inpfile");
+    var btncreate = document.getElementById("btncreate");
+    var txtOut    = document.getElementById("txtOut");
+    
+    var respStatus;
+    var imgfile = "";
+    
+    btncreate.onclick = createUser;
+    inpfile.onchange = selectImage;
+
+    // -----------------------------------------------
+    function createUser() {
+
+        //retrieve data from e.g. a form and append it to a FormData object
+        var fdata = new FormData();
+        fdata.append("avatar", imgfile);
+        fdata.append("fullname", inpfulln.value);
+        fdata.append("loginname", inplogin.value);
+        fdata.append("password", inppassw.value);
+
+        var fetchSettings = {
+            method: "POST",
+            body: fdata
+        }
+        
+        var respstatus;
+        
+        fetch("http://46.250.220.73:8080/blogfog/users/", fetchSettings)
+        .then(function(resp) {
+            //step 1
+            respstatus = resp.ok;            
+            return resp.json();
+            
+        }).then(function(data) {
+            //step 2
+            if (respstatus) {
+                //success               
+                txtOut.innerHTML = `<h3>${data.fullname}</h3>
+                                <img src="${data.image}" />
+                                <p>${data.message}</p>
+                                <button onClick="window.location='logginn.html';" value="click here">Logg inn</button>
+                                <p id="brukere"></p>`;
+                
+                localStorage.setItem("token", data.token); //save token
+            }
+            else {
+                //something went wrong
+                console.log(data);
+                txtOut.innerHTML = data.msg;
+            }
+            
+        }).catch(function(err) {
+            
+        });     
+    }    
+    
+    // -----------------------------------------------
+    function selectImage() {        
+        imgfile = inpfile.files[0];     
+    }
+    
+</script>
+    
+
+    
+</html>
+
+
