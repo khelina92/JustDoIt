@@ -11,5 +11,8 @@
     "url": "git remote add origin https://github.com/khelina92/node_exercise_2.git"
   },
   "author": "Keilin",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "pg": "7.3.0"
+  }
 }
