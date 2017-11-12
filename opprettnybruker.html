@@ -4,11 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <title>text in-out template</title>
-
     <link href="style.css" rel="stylesheet">
-
-    <link href="4_view.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -16,67 +12,64 @@
     <h1 id="velkommen">Opprett ny bruker</h1>
     <input id="inplogin" placeholder="Login name" />
     <input id="inppassw" placeholder="Password" type="password" />
+    <input id="inppassw2" placeholder="Repeat password" type="password" />
     <input id="inpfulln" placeholder="Full name" />
-    <input id="inpfile" type="file" value="Select image file" />    
+    <input id="inpfile" type="file" value="Select image file" />
     <button id="btncreate">Create user</button>
     <br>
-    <div id="txtOut">The result...</div>   
+    <div id="txtOut">The result...</div>
     </div>
 </body>
-    
+
 <script>
-    
-    // init ------------------------------------------ 
+
+    // init ------------------------------------------
     var inplogin  = document.getElementById("inplogin");
     var inppassw  = document.getElementById("inppassw");
+    var inppassw2  = document.getElementById("inppassw2");
     var inpfulln  = document.getElementById("inpfulln");
     var inpfile   = document.getElementById("inpfile");
     var btncreate = document.getElementById("btncreate");
     var txtOut    = document.getElementById("txtOut");
-    
+
     var respStatus;
     var imgfile = "";
-    
+
     btncreate.onclick = createUser;
     inpfile.onchange = selectImage;
-
     // -----------------------------------------------
     function createUser() {
-
         //retrieve data from e.g. a form and append it to a FormData object
         var fdata = new FormData();
         fdata.append("avatar", imgfile);
         fdata.append("fullname", inpfulln.value);
         fdata.append("loginname", inplogin.value);
         fdata.append("password", inppassw.value);
-
+        fdata.append("password", inppassw.value);
+        fdata.append("repeat password", inppassw2.value);
         var fetchSettings = {
             method: "POST",
             body: fdata
         }
-        
+
         var respstatus;
-        
+
         fetch("http://46.250.220.73:8080/blogfog/users/", fetchSettings)
         .then(function(resp) {
             //step 1
-            respstatus = resp.ok;            
+            respstatus = resp.ok;
             return resp.json();
-            
+
         }).then(function(data) {
             //step 2
             if (respstatus) {
-                //success               
+                //success
                 txtOut.innerHTML = `<h3>${data.fullname}</h3>
                                 <img src="${data.image}" />
                                 <p>${data.message}</p>
-
                                 <button onClick="window.location='logginn.html';" value="click here">Logg inn</button>
-
-                                <button onClick="window.location='4logginn.html';" value="click here">Logg inn</button>
-
                                 <p id="brukere"></p>`;
-                
+
                 localStorage.setItem("token", data.token); //save token
             }
             else {
@@ -84,21 +77,19 @@
                 console.log(data);
                 txtOut.innerHTML = data.msg;
             }
-            
+
         }).catch(function(err) {
-            
-        });     
-    }    
-    
-    // -----------------------------------------------
-    function selectImage() {        
-        imgfile = inpfile.files[0];     
+
+        });
     }
-    
+
+    // -----------------------------------------------
+    function selectImage() {
+        imgfile = inpfile.files[0];
+    }
+
 </script>
-    
 
-    
+
+
 </html>
-
-
