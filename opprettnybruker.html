@@ -4,7 +4,11 @@
 <head>
   <meta charset="utf-8" />
   <title>text in-out template</title>
+
     <link href="style.css" rel="stylesheet">
+
+    <link href="4_view.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -66,7 +70,11 @@
                 txtOut.innerHTML = `<h3>${data.fullname}</h3>
                                 <img src="${data.image}" />
                                 <p>${data.message}</p>
+
                                 <button onClick="window.location='logginn.html';" value="click here">Logg inn</button>
+
+                                <button onClick="window.location='4logginn.html';" value="click here">Logg inn</button>
+
                                 <p id="brukere"></p>`;
                 
                 localStorage.setItem("token", data.token); //save token

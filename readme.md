@@ -11,3 +11,25 @@ Medlemmer av gruppen
 <br>
 * Marius 
 [https://github.com/Jakplayz MariusGitBruker]
+<br>
+Roadmap: [https://trello.com/b/JLkzyVEO/story-board] 
+<br>
+Projectboard: [https://trello.com/b/zbTcZBJE/prosess]
+<br>
+Vi ønsker å lage en optimalisert tilpasset todolist for Keilin som gir henne mulighet til å ha oversikt over sin hektiske hverdag 
+<br>
+Dette innebærer: 
+* Kalender 
+* Innlogging 
+* Checkliste 
+* Hendelsesmapper 
+* Gjentagende hendelser 
+* Mulighet for å dele hendelser/kalender 
+* Påmindelse på epost/sms 
+* Spotifytilgang / mulighet til å høre på musikk ect. 
+Uniqe sellingpoints: 
+* Avspilling av musikk i selve appen, som er koblet opp mot spotify
+
+Link til heroku:
+<br>
+https://serverjustdoit.herokuapp.com/
