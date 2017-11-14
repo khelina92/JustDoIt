@@ -5,7 +5,6 @@ const app = express();
 const {Client} = require("pg");
 
 let dbString = ""
-
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static('public'));
 app.listen(app.get('port'), function() {
