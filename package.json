@@ -6,7 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+<<<<<<< HEAD
   "author": "Jostein Nordengen",
+=======
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khelina92/JustDoIt.git"
+  },
+  "author": "Julie Madshave, Keilin Sunnset and Marius Jakobsen",
+>>>>>>> 6e3cf9ac010f9c327394d684e73df3ff483b321e
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
