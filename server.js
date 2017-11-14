@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 const express = require('express');
 const app = express(); //server-app
 const bodyParser = require('body-parser');
@@ -17,8 +17,6 @@ app.get('/', function (req, res) {
 
 
 let dbString = "postgres://qiypkwjnjgwadw:ddf8a7f06464234473af6e17bd765d589a1ec038db7b514abdee5cf720293646@ec2-54-75-225-143.eu-west-1.compute.amazonaws.com:5432/da5jtj9gun137e"
-
-
 
 
 app.get('/lists',function(req,res){
@@ -40,9 +38,7 @@ app.get('/lists',function(req,res){
     
 });
 
-
-
-app.listen(3000, function () {
+/*app.listen(3000, function () {
   console.log('Server listening on port 3000!');
 });
 =======
@@ -64,6 +60,7 @@ app.get('/', function (req, res) {
   res.send('Hello crazy!')
 })
 
+
 app.get('/lists',function(req,res){
    
        let client = new Client({
@@ -82,10 +79,4 @@ app.get('/lists',function(req,res){
 
     
 });
-
-
-
-
-
-//app.get()
->>>>>>> 6e3cf9ac010f9c327394d684e73df3ff483b321e
+*/
