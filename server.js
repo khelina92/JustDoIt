@@ -1,8 +1,12 @@
-
+const url = require('url');
 const express = require('express');
 const app = express(); //server-app
 const bodyParser = require('body-parser');
 const {Client} = require("pg");
+
+app.set('port', (process.env.PORT || 3000));
+app.use(express.static('public'));
+app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
     
@@ -11,7 +15,10 @@ app.get('/', function (req, res) {
   res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
     
   //set statusline and body - and send
-  res.status(200).send('Hello World!!!'); //status-line and body
+  res.status(200).send('Hello World!'); //status-line and body
+
+    let staticApp = readTextFile("index.html");
+    res.send(staticApp);
     
 });
 
@@ -38,45 +45,6 @@ app.get('/lists',function(req,res){
     
 });
 
-/*app.listen(3000, function () {
-  console.log('Server listening on port 3000!');
+app.listen(3000, function () {
+  console.log('Server listening on port 3000!!!!');
 });
-=======
-const url = require('url');
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-const {Client} = require("pg");
-
-let dbString = ""
-
-app.set('port', (process.env.PORT || 8080));
-app.use(express.static('public'));
-app.listen(app.get('port'), function() {
-    console.log("Super group server is running", app.get("port"));
-});
-
-app.get('/', function (req, res) {
-  res.send('Hello crazy!')
-})
-
-
-app.get('/lists',function(req,res){
-   
-       let client = new Client({
-        connectionString:process.env.DATABASE_URL || dbString,
-        ssl:true
-    });
-
-    client.connect();
-
-    client.query("select * from lists", (err,resp) =>{
-        
-       
-        res.json(resp.rows).end();
-        client.end();
-    });
-
-    
-});
-*/
