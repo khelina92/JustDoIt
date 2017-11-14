@@ -13,7 +13,7 @@ app.listen(app.get('port'), function() {
 });
 
 app.get('/', function (req, res) {
-  res.send('Hello World!')
+  res.send('Hello crazy!')
 })
 
 app.get('/lists',function(req,res){

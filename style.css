@@ -1,5 +1,3 @@
-
-
 body {
     background-image: url(images/trianglepattern.jpg);
 }
@@ -74,3 +72,12 @@ input, button {
     #index{
          text-align: center;
     }
+
+
+/*Navigasjonsknapper*/ 
+
+#home {
+    left: 0px;
+    width: 46px;
+    background: url('home.png') 0 0;
+}
