@@ -15,15 +15,7 @@ app.get('/', function (req, res) {
   res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
     
   //set statusline and body - and send
-
-
   res.status(200).send('Hei verden!'); //status-line and body
-
- // res.status(200).send('Hello World!'); //status-line and body
-
-
-  //res.status(200).send('Hello World!'); //status-line and body
-
 
     let staticApp = readTextFile("index.html");
     res.send(staticApp);
@@ -49,9 +41,10 @@ app.get('/users', function(req,res){
     });
 });
 
-
-
-app.get('/lists',function(req,res){
+app.get('/lists/',function(req,res){
+    
+        res.set('Access-Control-Allow-Origin', '*'); 
+        res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
    
        let client = new Client({
         connectionString:process.env.DATABASE_URL || dbString,
@@ -72,6 +65,5 @@ app.get('/lists',function(req,res){
 
 app.listen(3000, function () {
   console.log('Server listening on port 3000!!!!');
-
 });
 
