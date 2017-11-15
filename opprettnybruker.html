@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <title>text in-out template</title>
+    <script src="superfetch2.js"></script>
     <link href="style.css" rel="stylesheet">
 </head>
 
@@ -20,7 +21,7 @@
     <div id="txtOut">The result...</div>
     </div>
 </body>
-
+ 
 <script>
 
     // init ------------------------------------------
@@ -64,11 +65,11 @@
             //step 2
             if (respstatus) {
                 //success
-                txtOut.innerHTML = `<h3>${data.fullname}</h3>
+               /* txtOut.innerHTML = `<h3>${data.fullname}</h3>
                                 <img src="${data.image}" />
                                 <p>${data.message}</p>
                                 <button onClick="window.location='logginn.html';" value="click here">Logg inn</button>
-                                <p id="brukere"></p>`;
+                                <p id="brukere"></p>`; */
 
                 localStorage.setItem("token", data.token); //save token
             }
