@@ -41,7 +41,10 @@ app.get('/users', function(req,res){
     });
 });
 
-app.get('/lists',function(req,res){
+app.get('/lists/',function(req,res){
+    
+        res.set('Access-Control-Allow-Origin', '*'); 
+        res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
    
        let client = new Client({
         connectionString:process.env.DATABASE_URL || dbString,

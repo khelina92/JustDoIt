@@ -5,6 +5,8 @@ var db = require('./dbconnect');
 //endpoint: GET travels
 router.get('/', function (req,res){
     
+
+    
     var sql = 'SELECT * FROM lists';
     db.any(sql).then(function(data){
                      
