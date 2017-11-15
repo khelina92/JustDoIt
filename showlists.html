@@ -5,32 +5,36 @@
     <meta charset="utf-8" />
     <title>test client</title>    
     <script src="superfetch2.js"></script>
-    <style src="style.css"></style>
+    <link href="style.css" rel="stylesheet">
 </head>
 
 <body>
     
-</body>
 
+</body>
+    
+    
 <script> 
     
     var url = "http://localhost:3000/lists/";
     superfetch(url, "json", succ, error);
+    var divliste;
     
     //success --------------------------------------
     function succ(data) {
         
     for (var i = 0; i < data.length; i++) {
-        var div = document.createElement("div");
-        div.innerHTML += "<h3>ID: " + data[i].id + "</h3>";
-        div.innerHTML += "<h3>Listenavn: " + data[i].listname + "</h3>"; 
-        div.innerHTML += "<h3>End time: " + data[i].duetime + "</h3>"; 
+        var divliste = document.createElement("div");
+        divliste.innerHTML += "<h3>ID: " + data[i].id + "</h3>";
+        divliste.innerHTML += "<h3>Listenavn: " + data[i].listname + "</h3>"; 
+        divliste.innerHTML += "<h3>End time: " + data[i].duetime + "</h3>"; 
        // div.innerHTML += "<h3>Duration: " + data[i].duration.minutes + "</h3>"; 
-        div.innerHTML += "<h3>Duedate: " + data[i].duedate + "</h3>"; 
-        div.innerHTML += "<h3>Description: " + data[i].listdescription + "</h3>"; 
+        divliste.innerHTML += "<h3>Duedate: " + data[i].duedate + "</h3>"; 
+        divliste.innerHTML += "<h3>Description: " + data[i].listdescription + "</h3>"; 
         var hr = document.createElement("hr");
-        document.body.appendChild(div);
+        document.body.appendChild(divliste);
         document.body.appendChild(hr);
+        
     }
 }
     
@@ -42,4 +46,25 @@
 
 </script>
 
+    
+<style>
+    
+    div{
+    text-align: center;
+    border-radius: 20px;
+    border-color:darkcyan;
+    border-style:groove;
+    box-shadow: 3px 5px 10px #888888;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 50px;
+    background-color: #ffffff;
+    opacity: 0.9;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    
+}
+    
+</style>    
+    
 </html>
