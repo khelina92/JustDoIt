@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Show lists</title>    
+    <title>Show users</title>    
     <script src="superfetch2.js"></script>
     <style src="style.css"></style>
 </head>
@@ -14,7 +14,7 @@
 
 <script> 
     
-    var url = "http://localhost:3000/lists/";
+    var url = "http://localhost:3000/users/";
     superfetch(url, "json", succ, error);
     
     //success --------------------------------------
@@ -23,11 +23,11 @@
     for (var i = 0; i < data.length; i++) {
         var div = document.createElement("div");
         div.innerHTML += "<h3>ID: " + data[i].id + "</h3>";
-        div.innerHTML += "<h3>Listenavn: " + data[i].listname + "</h3>"; 
-        div.innerHTML += "<h3>End time: " + data[i].duetime + "</h3>"; 
+        div.innerHTML += "<h3>Username: " + data[i].username + "</h3>"; 
+        div.innerHTML += "<h3>Firstname: " + data[i].firstname + "</h3>"; 
        // div.innerHTML += "<h3>Duration: " + data[i].duration.minutes + "</h3>"; 
-        div.innerHTML += "<h3>Duedate: " + data[i].duedate + "</h3>"; 
-        div.innerHTML += "<h3>Description: " + data[i].listdescription + "</h3>"; 
+        div.innerHTML += "<h3>Lastname: " + data[i].lastname + "</h3>"; 
+        //div.innerHTML += "<h3>Description: " + data[i].listdescription + "</h3>"; 
         var hr = document.createElement("hr");
         document.body.appendChild(div);
         document.body.appendChild(hr);
