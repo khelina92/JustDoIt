@@ -10,6 +10,13 @@ const {Client} = require("pg");
 app.set('port', (process.env.PORT || 3000));
 app.use(express.static('public'));
 
+app.use(function(req, res, next){    
+  //set headers
+  res.set('Access-Control-Allow-Origin', '*'); 
+  res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  next();
+});
+
 app.get('/', function (req, res) {
     
   //set headers
@@ -27,24 +34,6 @@ app.get('/', function (req, res) {
 
 let dbString = "postgres://qiypkwjnjgwadw:ddf8a7f06464234473af6e17bd765d589a1ec038db7b514abdee5cf720293646@ec2-54-75-225-143.eu-west-1.compute.amazonaws.com:5432/da5jtj9gun137e";
 
-
-
-/*app.get('/uu/', function (req, res) {
-    
-    console.log("inne i uu")
-    
-  //set headers
-  res.set('Access-Control-Allow-Origin', '*'); 
-  res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-    
-  //set statusline and body - and send
-  res.status(200).send('Hei verden!'); //status-line and body
-
-    let staticApp = readTextFile("index.html");
-    res.send(staticApp);
-    
-});
-*/
 
 //---GET USERS
     app.get('/users/', function(req,res){
@@ -65,10 +54,6 @@ let dbString = "postgres://qiypkwjnjgwadw:ddf8a7f06464234473af6e17bd765d589a1ec0
             client.end();
         });
 });
-
-
-//var users = require('./users.js');
-//app.use('/users/', users);
 
 //---POST USERS
 app.post('/users/', bodyParser, function (req, res){
@@ -177,11 +162,6 @@ app.post('/lists/', bodyParser, function (req, res){
 //----DELETE LISTS
 app.delete('/lists/', function (req,res){
     
-    console.log("inne i delete");
-    
-    res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-    res.set('Access-Control-Allow-Origin', '*'); 
-    
     var upload = req.query.listid;
     
     console.log(upload);
@@ -193,21 +173,22 @@ app.delete('/lists/', function (req,res){
             ssl:true
     });
     
-    if (data.lenght > 0) {
-        res.status(200).json({msg: "delete ok"});
-    }
-    else{
-        res.status(200).json({msg: "can't delete"});
-    }
 
     client.connect();
 
     client.query(sql, (err,resp) =>{
 
         //res.json({msg: "delete ok"}).end();
-        client.end();
-    });
-          
+        if (!err) {
+            res.status(200).json({msg: "delete ok"});
+        }
+        else{
+            res.status(200).json({msg: "can't delete"});
+        }
+        
+    client.end();
+
+    });      
 });
 
 

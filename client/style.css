@@ -1,6 +1,6 @@
 body {
     background-image: url(images/turquoise-circles-pattern.png);
-    opacity: 0.5;
+    
 }
 
 
@@ -26,7 +26,7 @@ body {
     
 }
 
-input, button{
+input{
     box-sizing: border-box;
     width: 500px;;
     margin-bottom: 5px;
@@ -36,6 +36,16 @@ input, button{
     background-color: whitesmoke;
         
         
+}
+
+button{
+    box-sizing: border-box;
+    width: 500px;;
+    margin-bottom: 5px;
+    height: 40px;
+    font-size: 14pt;
+    padding-left: 4px;
+    background-color: coral;
 }
 
 img{
