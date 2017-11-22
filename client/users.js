@@ -32,9 +32,6 @@ app.post('/users/', bodyParser, function (req, res){
     var sql = `PREPARE insert_users (int, text, text, text, text, text, int, boolean) AS INSERT INTO users VALUES(DEFAULT, $2, $3, $4, $5, $6, $7, $8); EXECUTE insert_users (0, '${upload.username}', '${upload.password}', '${upload.firstname}','${upload.lastname}', 'bilde', 0, 'true' )`;
     
     
-    
-    console.log(sql)
-    
     let client = new Client({
             connectionString:process.env.DATABASE_URL || dbString,
             ssl:true

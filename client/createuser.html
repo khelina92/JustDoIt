@@ -18,7 +18,7 @@
     <input id="inplastname" placeholder="Last name" />
     <button id="btncreate">Create user</button>
     <br>
-    <div id="txtOut">The result...</div>
+    <button onClick="window.location='logginn.html';" value="click here" id="btnlogginn">Logg inn</button>
     </div>
 </body>
 
@@ -28,15 +28,16 @@
     var inppassw  = document.getElementById("inppassw");
     var inppassw2  = document.getElementById("inppassw2");
     var inpfirstname  = document.getElementById("inpfirstname");
-    var inplastname = document.getElementById("inplastname")
+    var inplastname = document.getElementById("inplastname");
     var btncreate = document.getElementById("btncreate");
+    var btnlogginn = document.getElementById("btnlogginn");
     var txtOut    = document.getElementById("txtOut");
     
     btncreate.onclick = createUser;
     
     // -----------------------------------------------
     function createUser() {
-        //retrieve data from e.g. a form and append it to a FormData object
+        
         var upload = JSON.stringify({
             username: inplogin.value,
             password: inppassw.value,

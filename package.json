@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/khelina92/JustDoIt/issues"
   },
-  "homepage": "https://github.com/khelina92/JustDoIt#readme"
+  "homepage": "https://github.com/khelina92/JustDoIt#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "pg": "^7.4.0",
+    "pg-promise": "^7.3.2"
+  }
 }

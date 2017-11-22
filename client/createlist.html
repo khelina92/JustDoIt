@@ -11,13 +11,15 @@
 <body>
     <div id="box1">
     <h1 id="velkommen">Opprett ny liste</h1>
+    <h3 id="txtMsg"></h3>
     <input id="inplistname" placeholder="Liste name" />
     <input id="inplistdescription" placeholder="Description" />
-    <input id="inpduedate" placeholder="dd/mm/yyyy" />
+    <input id="inpduedate" placeholder="yyyy-mm-dd" />
     <input id="inpduetime" placeholder="hh:mm:ss" />
     <button id="btncreate">Create list</button>
     <br>
-    <div id="txtOut">The result...</div>
+    <button onClick="window.location='showlists.html';" value="click here" id="seelists">Go to your lists</button>
+    
     </div>
 </body>
 
@@ -28,7 +30,8 @@
     var duedate  = document.getElementById("inpduedate");
     var duetime  = document.getElementById("inpduetime");
     var btncreate = document.getElementById("btncreate");
-    var txtOut    = document.getElementById("txtOut");
+    var txtOut = document.getElementById("txtOut");
+    var txtMsg = document.getElementById("txtMsg"); 
     
     btncreate.onclick = createList;
     
@@ -39,8 +42,7 @@
             listname: inplistname.value,
             listdescription: inplistdescription.value,
             duedate: inpduedate.value,
-            duetime: inpduetime.value
-            console.log("Createlist");
+            duetime: inpduetime.value            
             
         });
         
@@ -56,16 +58,27 @@
     }
     
     
-    
-    
     //success --------------------------------------
     function succ(data) {
+        
         console.log(data);
+        
+        if(data) {
+            
+            localStorage.setItem("listedata", JSON.stringify(data));
+            window.location.href = "showlists.html";
+            
+        }
+        else {
+            txtMsg.innerHTML = "Something went wrong. Please try again later";
+        }
+    
     }
     
     //error ----------------------------------------
     function error(err) {
         console.log(err);
+        
     }   
 
 </script>
