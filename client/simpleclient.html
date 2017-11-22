@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>test client</title>    
+    <script src="superfetch2.js"></script>
+</head>
+
+<body>
+    
+</body>
+
+<script> 
+    
+    var url = "http://localhost:3000/lists";
+    superfetch(url, "json", succ, error);
+    
+    //success --------------------------------------
+    function succ(data) {
+        console.log(data);
+    }
+    
+    //error ----------------------------------------
+    function error(err) {
+        console.log(err);
+    }   
+
+</script>
+
+</html>
