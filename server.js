@@ -110,6 +110,8 @@ app.post('/users/', bodyParser, function (req, res){
    app.post('/users/auth/', bodyParser, function(req,res){
        
        
+       
+       
        res.set('Access-Control-Allow-Origin', '*'); 
         res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
         
@@ -126,30 +128,39 @@ app.post('/users/', bodyParser, function (req, res){
                     SELECT * FROM users WHERE username=$1; 
                     EXECUTE get_user('${upload.loginname}')`;*/
        
-       var sql = `SELECT * FROM users WHERE username='${upload.loginname}'`;
-       
-       console.log(sql);
+       var sql = `SELECT * FROM users WHERE username='${upload.username}'`;
 
         client.query(sql, (err,resp) =>{
-            
+                        
             console.log(resp.rows);
             
+            // Ingen eller 0 bokstaver skrevet inn = feil
+            
             if (resp.rows.length <= 0) {
-                res.json({msg: "feil brukernavn"}).end();
+                res.json({msg: "feil brukernavn/vennligst skriv inn"}).end();
             }
+            
+            // Se om brukernavn eksisterer 
             else {
+            
                 
                 var uplpassw = upload.password;
                 var dbpassw = resp.rows[0].password;
                 
-                if (uplpassw == dbpassw){
-                    res.json({msg: "du får lov å logge inn"}).end();
+                
+                
+                if (uplpassw == dbpassw ){
+                    
+                    
+                    res.json({msg: "du er lov å logge inn"}).end();
+                    //token jason web token
+                    
                 }
                 else {
-                    res.json({msg: "feil passord"}).end();
+                    res.json({msg: "Feil brukernavn og passord"}).end();
                 }
                 
-                
+             
                 
             }
         
