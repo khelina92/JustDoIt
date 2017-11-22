@@ -37,6 +37,5 @@ function superfetch(url, type, success, fail, settings) {
             
             fail(error);
         }
-
     }
 }

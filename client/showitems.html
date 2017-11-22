@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Show items</title>    
+    <script src="superfetch2.js"></script>
+    <style src="style.css" rel="stylesheet"></style>
+</head>
+
+<body>
+    
+</body>
+
+<script> 
+    
+    var url = "http://localhost:3000/listitems/";
+    superfetch(url, "json", succ, error);
+    
+    //success --------------------------------------
+    function succ(data) {
+        
+    for (var i = 0; i < data.length; i++) {
+        var div = document.createElement("div");
+        div.innerHTML += "<h3>Listenavn: " + data[i].listid + "</h3>";
+        div.innerHTML += "<h3>Listenavn: " + data[i].itemname + "</h3>"; 
+        div.innerHTML += "<h3>Description: " + data[i].itemdescription + "</h3>"; 
+        var hr = document.createElement("hr");
+        document.body.appendChild(div);
+        document.body.appendChild(hr);
+    }
+}
+    
+    //error ----------------------------------------
+    function error(err) {
+        console.log(err);
+    } 
+    
+</script>
+
+</html>
