@@ -5,7 +5,6 @@
   <meta charset="utf-8" />
   <title>text in-out template</title>
     <script src="superfetch2.js"></script>
-    <script src="server.js"></script>
     <link href="style.css" rel="stylesheet">
     
 </head>
@@ -31,8 +30,7 @@
     var btnlogin = document.getElementById("btnlogin");
     var txtOut    = document.getElementById("txtOut");
 
-    var respStatus;
-    var imgfile = "";
+    //var respStatus;
 
     btnlogin.onclick = loginUser;       
 
@@ -44,37 +42,35 @@
             password: password.value
         })
         
-        var url = "http://localhost:3000/users/auth/";
+        console.log(upload);
         
         var cfg = {
             method: "POST",
             body: upload
         }
+        
+        var url = "http://localhost:3000/users/auth/";
         superfetch(url, "json", succ, error, cfg);   
+          
     }
     
     // succ ------------------------------------------------
-    function succ(data) {  
-        
+    
+    
+     //success --------------------------------------
+    function succ(data) {
         console.log(data);
-        
         localStorage.setItem("logindata", JSON.stringify(data));
+        window.location.href = "home.html";
         
-        // token blir opprettet 
-         //token inni her: localStorage.setItem("logindata", JSON.stringify(data));
-        //send til ny side
-       
     }
     
-    // error-----------------------------------------
-        
-    function error(err){
-        console.log(err); 
-    }
-        
-   
+    //error ----------------------------------------
+    function error(err) {
+        console.log(err);
+    }   
+     
 </script>
 
-
-
 </html>
+
