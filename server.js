@@ -1,7 +1,7 @@
 const url = require('url');
 const express = require('express');
 const app = express(); //server-app
-const bodyParser = require('body-parser').json();
+const bodyParser = require('body-parser').text();
 const {Client} = require("pg");
 var db = require('./dbconnect'); //database
 var jwt = require("jsonwebtoken");
@@ -9,9 +9,9 @@ var sha256 = require('sha256');
 
 var secret = "frenchfriestastegood!";
 
-var access = function(req,resp, next){
+var access = function(req,res, next){
 	res.set('Access-Control-Allow-Origin', '*');
-  res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+    res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
 	next();
 }
 
@@ -19,7 +19,7 @@ var access = function(req,resp, next){
 app.set('port', (process.env.PORT || 3000));
 app.use(express.static('public'));
 app.use(bodyParser);
-app.use(access)
+app.use(access);
 
 
 app.get('/', function (req, res) {
@@ -40,17 +40,27 @@ let dbString = "postgres://qiypkwjnjgwadw:ddf8a7f06464234473af6e17bd765d589a1ec0
 //---GET USERS
     app.get('/users/', function(req,res){
 
-    
+        /*
+        let client = new Client({
+            connectionString:process.env.DATABASE_URL | 'postgres://postgres:root@localhost:5432/JustDoIt';
+            ssl:true
+        });
+        
+        */
+        
+        
         let client = new Client({
             connectionString:process.env.DATABASE_URL || dbString,
             ssl:true
         });
+        
+        
 
         client.connect();
 
-        client.query("select * from users", (err,resp) =>{
+        client.query("select * from users", (err,res) =>{
 
-            res.json(resp.rows).end();
+            res.json(res.rows).end();
             client.end();
         });
 });
@@ -60,9 +70,9 @@ let dbString = "postgres://qiypkwjnjgwadw:ddf8a7f06464234473af6e17bd765d589a1ec0
 //app.use('/users/', users);
 
 //---POST USERS, opprett bruker
-app.post('/users/', function (req, res){
+app.post('/users/', bodyParser, function (req, res){
 
-   
+    
     var upload = JSON.parse(req.body);
     var encrPassw = sha256(upload.password); //hasher passordet
 
@@ -78,7 +88,7 @@ app.post('/users/', function (req, res){
 
     client.connect();
 
-    client.query(sql, (err,resp) =>{
+    client.query(sql, (err,res) =>{
 
         //create token
         var payload = {username: upload.username, firstname: upload.firstname, lastname: upload.lastname};
@@ -95,27 +105,40 @@ app.post('/users/', function (req, res){
 
 //-- LOG IN
 
-   app.post('/users/auth/', function(req, res){
+   app.post('/users/auth/', bodyParser, function (req, res){
+       
+       //res.set('Access-Control-Allow-Origin', '*');
+       //res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+       
+       console.log("hurra")
 
 
-        let upload = req.body;
+        let upload = JSON.parse(req.body);
+       
+        console.log(upload);
+       
+       
         let encrPassw =  sha256(upload.password); //hasher passordet
-
+       
+    
         let sql = `SELECT * FROM users WHERE username='${upload.username}'`;
-
+       
+        
         let client = new Client({
             connectionString:process.env.DATABASE_URL || dbString,
             ssl:true
         });
+       
+
 
         client.connect();
 
-        client.query(sql, (err,resp) =>{
+        client.query(sql, (err,res) =>{
 
-            let dbpassw = resp.rows[0].password;
-    
+            let dbpassw = res.rows[0].password;
+            
 
-            if (resp.rows.length <= 0) {
+            if (res.rows.length <= 0) {
                 res.json({msg: "Vennligst skriv inn brukernavn"}).end();
             }
 
@@ -130,18 +153,22 @@ app.post('/users/', function (req, res){
 
                     //send logininfo + token to the client
                     res.status(200).json({username: upload.username, firstname: upload.firstname, lastname: upload.lastname, token: tok, msg:"du er logget inn"}).end();
+                    
+                    
 
                 }
                 else {
                     res.status(401).json({msg: "Feil brukernavn og passord"}).end();
                 }
 
-                /*
-                res.json({msg: "Du får logge inn"}).end();
-              */
+                
+                //res.json({msg: "Du får logge inn"}).end();
+              
             };
        });
-
+       
+       
+        
 
    });
 
@@ -157,10 +184,9 @@ app.post('/users/', function (req, res){
 
     client.connect();
 
-    client.query("select * from lists", (err,resp) =>{
+    client.query("select * from lists", (err,res) =>{
 
-
-        res.json(resp.rows).end();
+        res.json(res.rows).end();
         client.end();
     });
 
@@ -186,7 +212,7 @@ app.post('/lists/', bodyParser, function (req, res){
 
     client.connect();
 
-    client.query(sql, (err,resp) =>{
+    client.query(sql, (err,res) =>{
 
         console.log("inne i qutr");
 
@@ -209,9 +235,9 @@ app.post('/lists/', bodyParser, function (req, res){
 
     client.connect();
 
-    client.query("select * from listitems", (err,resp) =>{
+    client.query("select * from listitems", (err,res) =>{
 
-        res.json(resp.rows).end();
+        res.json(res.rows).end();
         client.end();
     });
 
