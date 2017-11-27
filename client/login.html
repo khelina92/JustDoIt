@@ -42,13 +42,16 @@
             password: password.value
         })
         
+        console.log(upload);
+        
         var cfg = {
             method: "POST",
             body: upload
         }
         
-        var url = "/users/auth/";
+        var url = "http://localhost:3000/users/auth/";
         superfetch(url, "json", succ, error, cfg);   
+          
     }
     
     // succ ------------------------------------------------
@@ -58,6 +61,8 @@
     function succ(data) {
         console.log(data);
         localStorage.setItem("logindata", JSON.stringify(data));
+        window.location.href = "home.html";
+        
     }
     
     //error ----------------------------------------
