@@ -10,11 +10,12 @@
 
 <body>
     <div id="box1">
-    <h1 id="velkommen">Opprett ny liste</h1>
+    <h1 id="velkommen">Create new list</h1>
     <h3 id="txtMsg"></h3>
-    <input id="inplistname" placeholder="Liste name" />
+    <input id="inplistname" placeholder="List name" />
     <input id="inplistdescription" placeholder="Description" />
-    <input id="inpduedate" placeholder="yyyy-mm-dd" />
+    <h3>Due by:</h3>
+    <input type="date" id="inpduedate">
     <input id="inpduetime" placeholder="hh:mm:ss" />
     <button id="btncreate">Create list</button>
     <br>
@@ -35,6 +36,15 @@
     
     btncreate.onclick = createList;
     
+    var d = new Date(duedate.value);        
+        var month = d.getMonth();        
+        var i = 1;
+        var m = month;
+        d.setDate(i);
+    
+    //få tak i logindata/token
+    var logindata = JSON.parse(localStorage.getItem("logindata"));
+    
     // -----------------------------------------------
     function createList() {
         
@@ -51,7 +61,7 @@
             body: upload
         }
         
-        var url = "http://localhost:3000/lists/";
+        var url = "http://localhost:3000/lists?token=" + logindata.token;
         superfetch(url, "json", succ, error, fetchSettings);
         
         
@@ -66,7 +76,7 @@
         if(data) {
             
             localStorage.setItem("listedata", JSON.stringify(data));
-            window.location.href = "showlists.html";
+            //window.location.href = "showlists.html";
             
         }
         else {

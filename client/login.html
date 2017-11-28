@@ -17,7 +17,7 @@
 
     <button id="btnlogin">Logg inn</button>
     <br>
-    <div id="txtOut">The result...</div>
+    <div id="txtOut"></div>
     </div>
 </body>
 
@@ -43,6 +43,7 @@
         })
         
         console.log(upload);
+
         
         var cfg = {
             method: "POST",
@@ -51,7 +52,7 @@
         
         var url = "http://localhost:3000/users/auth/";
         superfetch(url, "json", succ, error, cfg);   
-          
+
     }
     
     // succ ------------------------------------------------

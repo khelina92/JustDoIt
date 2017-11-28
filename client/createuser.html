@@ -6,6 +6,7 @@
   <title>Create user</title>
     <script src="superfetch2.js"></script>
     <link href="style.css" rel="stylesheet">
+   
 </head>
 
 <body>
@@ -18,7 +19,6 @@
     <input id="inplastname" placeholder="Last name" />
     <button id="btncreate">Create user</button>
     <br>
-    <div id="txtOut">The result...</div>
     </div>
 </body>
 
@@ -36,6 +36,8 @@
     
     // -----------------------------------------------
     function createUser() {
+        
+        var url = "http://localhost:3000/users/";
         //retrieve data from e.g. a form and append it to a FormData object
         var upload = JSON.stringify({
             username: inplogin.value,
@@ -50,9 +52,8 @@
             body: upload
         }
         
-        var url = "http://localhost:3000/users/";
-        superfetch(url, "json", succ, error, fetchSettings);
         
+        superfetch(url, "json", succ, error, fetchSettings);
         
     }
     
@@ -60,6 +61,8 @@
     //success --------------------------------------
     function succ(data) {
         console.log(data);
+        window.location.href = "home.html";
+        
     }
     
     //error ----------------------------------------
