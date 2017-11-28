@@ -4,13 +4,16 @@
 <head>
   <meta charset="utf-8" />
   <title>Just do it</title>
+    <script src="superfetch2.js"></script>
     <link href="style.css" rel="stylesheet">
+    <link href="login.html">
 </head>
 
 <body>
     <div id="box1">
         <div id="index">
             <h1 id="velkommen">Velkommen</h1>
+            <h3 id="innlogget"></h3>
             <br>
             <br>
         
@@ -26,9 +29,18 @@
     
 <script>
     
+    
     var opprettnyliste  = document.getElementById("opprettnyliste");
     var seminelister  = document.getElementById("seminelister");
     
+    let object = JSON.parse(localStorage.getItem("logindata"));
+    
+    var url = "http://localhost:3000/users?token=" + object.username;
+    
+    let fultnavn = object.username;
+    
+    document.getElementById("innlogget").innerHTML = fultnavn;
+
     
 </script>
 
