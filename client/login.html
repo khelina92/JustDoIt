@@ -42,7 +42,8 @@
             password: password.value
         })
         
-        
+        console.log(upload);
+
         
         var cfg = {
             method: "POST",
@@ -51,7 +52,7 @@
         
         var url = "http://localhost:3000/users/auth/";
         superfetch(url, "json", succ, error, cfg);   
-       
+
     }
     
     // succ ------------------------------------------------
