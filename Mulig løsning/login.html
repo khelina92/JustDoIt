@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>text in-out template</title>
+    <script src="superfetch2.js"></script>
+    <link href="style.css" rel="stylesheet">
+    
+</head>
+
+<body>
+    <div id="box1">
+        <h1 id="velkommen">Logg inn</h1>
+    <input type ="text"     id="username" placeholder="Login name" />
+    <input type="password"  id="password" placeholder="Password"  />
+
+    <button id="btnlogin">Logg inn</button>
+    <br>
+    <div id="txtOut">The result...</div>
+    </div>
+</body>
+
+<script>
+
+    // init ------------------------------------------
+    var username  = document.getElementById("username");
+    var password  = document.getElementById("password");
+    
+    var btnlogin = document.getElementById("btnlogin");
+    var txtOut    = document.getElementById("txtOut");
+
+    //var respStatus;
+
+    btnlogin.onclick = loginUser;       
+
+    // ----------------------------------------------
+    function loginUser() { 
+        
+        var upload = JSON.stringify({
+            username:username.value, 
+            password: password.value
+        });
+        
+        console.log(upload);
+        
+        var cfg = {
+            method: "POST",
+            body: upload
+        }
+        
+        var url = "http://localhost:3000/users/auth/";
+        superfetch(url, "json", succ, error, cfg);   
+          
+    }
+    
+    // succ ------------------------------------------------
+    
+    
+     //success --------------------------------------
+    function succ(data) {
+        console.log(data);
+        localStorage.setItem("logindata", JSON.stringify(data));
+        window.location.href = "home.html";
+        
+    }
+    
+    //error ----------------------------------------
+    function error(err) {
+        console.log(err);
+    }   
+     
+</script>
+
+</html>
+

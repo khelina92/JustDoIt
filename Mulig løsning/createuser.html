@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Create user</title>
+    <script src="superfetch2.js"></script>
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="box1">
+    <h1 id="velkommen">Opprett ny bruker</h1>
+    <input id="inplogin" placeholder="Login name" />
+    <input id="inppassw" placeholder="Password" type="password" />
+    <input id="inppassw2" placeholder="Repeat password" type="password" />
+    <input id="inpfirstname" placeholder="First name" />
+    <input id="inplastname" placeholder="Last name" />
+    <button id="btncreate">Create user</button>
+    <br>
+    <div id="txtOut">The result...</div>
+    </div>
+</body>
+
+<script> 
+    // init ------------------------------------------
+    var inplogin  = document.getElementById("inplogin");
+    var inppassw  = document.getElementById("inppassw");
+    var inppassw2  = document.getElementById("inppassw2");
+    var inpfirstname  = document.getElementById("inpfirstname");
+    var inplastname = document.getElementById("inplastname")
+    var btncreate = document.getElementById("btncreate");
+    var txtOut    = document.getElementById("txtOut");
+    
+    btncreate.onclick = createUser;
+    
+    // -----------------------------------------------
+    function createUser() {
+        //retrieve data from e.g. a form and append it to a FormData object
+        var upload = JSON.stringify({
+            username: inplogin.value,
+            password: inppassw.value,
+            firstname: inpfirstname.value,
+            lastname: inplastname.value
+            
+        });
+        
+        var fetchSettings = {
+            method: "POST",
+            body: upload
+        }
+        
+        var url = "http://localhost:3000/users/";
+        superfetch(url, "json", succ, error, fetchSettings);
+        
+        
+    }
+    
+    
+    //success --------------------------------------
+    function succ(data) {
+        console.log(data);
+        
+        //save logindata/token to localStorage 
+        localStorage.setItem("logindata", JSON.stringify(data));
+    }
+    
+    //error ----------------------------------------
+    function error(err) {
+        console.log(err);
+    }   
+</script>
+
+</html>
