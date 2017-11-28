@@ -88,7 +88,7 @@ app.post('/users/', bodyParser, function (req, res){
 
     client.connect();
 
-    client.query(sql, (err,res) =>{
+    client.query(sql, (err,dbresp) =>{
 
         //create token
         var payload = {username: upload.username, firstname: upload.firstname, lastname: upload.lastname};
@@ -110,7 +110,6 @@ app.post('/users/', bodyParser, function (req, res){
        //res.set('Access-Control-Allow-Origin', '*');
        //res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
        
-       console.log("hurra")
 
 
         let upload = JSON.parse(req.body);
@@ -123,6 +122,8 @@ app.post('/users/', bodyParser, function (req, res){
     
         let sql = `SELECT * FROM users WHERE username='${upload.username}'`;
        
+       console.log(sql);
+       
         
         let client = new Client({
             connectionString:process.env.DATABASE_URL || dbString,
@@ -133,13 +134,13 @@ app.post('/users/', bodyParser, function (req, res){
 
         client.connect();
 
-        client.query(sql, (err,res) =>{
+        client.query(sql, (err,dbresp) =>{
 
-            let dbpassw = res.rows[0].password;
+            let dbpassw = dbresp.rows[0].password;
             
 
-            if (res.rows.length <= 0) {
-                res.json({msg: "Vennligst skriv inn brukernavn"}).end();
+            if (dbresp.rows.length <= 0) {
+                dbresp.json({msg: "Vennligst skriv inn brukernavn"}).end();
             }
 
             else {
@@ -175,7 +176,7 @@ app.post('/users/', bodyParser, function (req, res){
 
 
 //----GET LISTS
-    app.get('/lists/',function(req,res){
+    app.get('/lists/', function(req,res){
 
         let client = new Client({
         connectionString:process.env.DATABASE_URL || dbString,
@@ -184,9 +185,9 @@ app.post('/users/', bodyParser, function (req, res){
 
     client.connect();
 
-    client.query("select * from lists", (err,res) =>{
+    client.query("select * from lists", (err,dbresp) =>{
 
-        res.json(res.rows).end();
+        dbresp.json(dbresp.rows).end();
         client.end();
     });
 
@@ -212,11 +213,11 @@ app.post('/lists/', bodyParser, function (req, res){
 
     client.connect();
 
-    client.query(sql, (err,res) =>{
+    client.query(sql, (err,dbresp) =>{
 
         console.log("inne i qutr");
 
-        res.json(err).end();
+        dbresp.json(err).end();
         client.end();
     });
 
