@@ -33,6 +33,8 @@
    
     superfetch(url, "json", succ, error);
     
+    
+    
     btncreate.onclick = function() {
         
         window.location.href = "showlists.html";
@@ -55,10 +57,7 @@
         var div = document.createElement("div");
         div.id = 'box2';
         
-        var h2 = document.createElement("h2");
-        h2.id = 'knapp';
         
-        div.innerHTML="<a href='createitems.html" +  "'> Page 2</a>";
         div.innerHTML += "<h3>Listenavn: " + data[i].listname + "</h3>"; 
         div.innerHTML += "<h3>Description: " + data[i].listdescription + "</h3>";
         div.innerHTML += "<h3>Due time: " + data[i].duetime + "</h3>"; 
@@ -77,10 +76,8 @@
         btnAdd.id = data[i].listid;        
         div.appendChild(btnAdd);
         
-
         
         
-        document.body.appendChild(h2);
         document.body.appendChild(div);
         
     }
@@ -104,9 +101,12 @@
     function addfunc(evt) {
         
         var listeid = evt.currentTarget.id;
-        console.log(listeid)
+        
+        localStorage.setItem("listeid", listeid);
+        
         
         window.location.href = "showitems.html";
+        
     }
     
     
