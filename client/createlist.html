@@ -71,18 +71,17 @@
     //success --------------------------------------
     function succ(data) {
         
-        console.log(data);
-        
-        if(data) {
+        if(logindata) {
             
             localStorage.setItem("listedata", JSON.stringify(data));
-            //window.location.href = "showlists.html";
+            window.location.href = "showlists.html";
             
         }
-        else {
-            txtMsg.innerHTML = "Something went wrong. Please try again later";
+        else{
+            console.log(data);
         }
-    
+        
+        
     }
     
     //error ----------------------------------------

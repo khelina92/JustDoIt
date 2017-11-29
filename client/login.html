@@ -16,6 +16,7 @@
     <input type="password"  id="password" placeholder="Password"  />
 
     <button id="btnlogin">Logg inn</button>
+    <button onClick="window.location='createuser.html';" value="click here"id="seminelister">Opprett ny bruker</button>
     <br>
     <div id="txtOut"></div>
     </div>
@@ -42,9 +43,6 @@
             password: password.value
         })
         
-        console.log(upload);
-
-        
         var cfg = {
             method: "POST",
             body: upload
@@ -52,7 +50,7 @@
         
         var url = "http://localhost:3000/users/auth/";
         superfetch(url, "json", succ, error, cfg);   
-
+       
     }
     
     // succ ------------------------------------------------
@@ -60,8 +58,9 @@
     
      //success --------------------------------------
     function succ(data) {
-        console.log(data);
+       
         localStorage.setItem("logindata", JSON.stringify(data));
+         console.log(data);
         window.location.href = "home.html";
         
     }
