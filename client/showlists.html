@@ -54,17 +54,35 @@
         
         var div = document.createElement("div");
         div.id = 'box2';
+        
+        var h2 = document.createElement("h2");
+        h2.id = 'knapp';
+        
+        div.innerHTML="<a href='createitems.html" +  "'> Page 2</a>";
         div.innerHTML += "<h3>Listenavn: " + data[i].listname + "</h3>"; 
         div.innerHTML += "<h3>Description: " + data[i].listdescription + "</h3>";
         div.innerHTML += "<h3>Due time: " + data[i].duetime + "</h3>"; 
         div.innerHTML += "<h3>Duedate: " + d + "</h3>";  
         div.innerHTML += "<h3>ID: " + data[i].listid + "</h3>";
-        div.innerHTML += "<button>" + "slett" + "</button>"; 
+        
+        var btnSlett = document.createElement("button");
+        btnSlett.innerHTML = "Slett";
+        btnSlett.addEventListener("click", slettefunc);
+        btnSlett.id = data[i].listid;       
+        div.appendChild(btnSlett);
+        
+        var btnAdd = document.createElement("button");
+        btnAdd.innerHTML = "Legg til item";
+        btnAdd.addEventListener("click", addfunc);
+        btnAdd.id = data[i].listid;        
+        div.appendChild(btnAdd);
+        
+
         
         
-        var hr = document.createElement("hr");
+        document.body.appendChild(h2);
         document.body.appendChild(div);
-        document.body.appendChild(hr);
+        
     }
 }
     
@@ -75,6 +93,20 @@
     
     function delSucc(data){
         console.log(data);
+    }
+    
+    function slettefunc(evt) {
+        
+        var listeid = evt.currentTarget.id;
+        console.log(listeid)
+    }
+    
+    function addfunc(evt) {
+        
+        var listeid = evt.currentTarget.id;
+        console.log(listeid)
+        
+        window.location.href = "showitems.html";
     }
     
     
