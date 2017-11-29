@@ -155,24 +155,14 @@ app.post('/users/', bodyParser, function (req, res){
 //----GET LISTS
 
     app.get('/lists/', bodyParser, function(req,res){
+        
+        console.log("inne i list")
 
-        
-    
-        
-   // var upload = req.headers.cookie;
-     //   console.log(upload);
-   
-        
     let token = req.query.token;
     
         
     let logindata = jwt.verify(token, secret); //check the token
-        
-    //let sql = `PREPARE get_lists (text) AS SELECT * FROM lists WHERE username=$1; EXECUTE get_lists ('${logindata.username}')`;
-        
-     
-        
-        
+
         
     let sql = `SELECT * FROM lists WHERE username='${logindata.username}'`;
 
@@ -202,12 +192,12 @@ app.post('/lists/', bodyParser, function (req, res){
     
     let logindata = jwt.verify(token, secret); //check the token
     console.log(logindata);
-    var sql = `PREPARE insert_lists (int, text, text, timestamp, date, time, boolean, text) AS INSERT INTO lists VALUES(DEFAULT, $2, $3, $4, $5, $6, $7, $8); EXECUTE insert_lists (0, '${upload.listname}', '${upload.listdescription}', '2017-11-22 12:53','${upload.duedate}', '${upload.duetime}', 'true', '${logindata.username}')`;
+    var sql = `PREPARE insert_lists (int, text, text, timestamp, date, time, boolean, text) AS INSERT INTO lists VALUES(DEFAULT, $2, $3, $4, $5, $6, $7, $8); EXECUTE insert_lists (0, '${upload.listname}', '${upload.listdescription}', '2017-11-22 12:53','${upload.duedate}', '${upload.duetime}', 'false', '${logindata.username}')`;
 
     
     let client = new Client({
-            connectionString:process.env.DATABASE_URL || dbString,
-            ssl:true
+        connectionString:process.env.DATABASE_URL || dbString,
+        ssl:true
     });
 
     client.connect();
@@ -225,15 +215,50 @@ app.post('/lists/', bodyParser, function (req, res){
 app.get('/listitems/',function(req,res){
     
        
-       let client = new Client({
+    let token = req.query.token;
+    let listeid = req.query.listeid;
+     
+    let logindata = jwt.verify(token, secret); //check the token
+ 
+    let sql = `SELECT * FROM listitems WHERE listid='${listeid}'`;
+        let client = new Client({
+                connectionString:process.env.DATABASE_URL || dbString,
+                ssl:true
+        });
+       
+        client.connect();
+        client.query(sql, (err,dbresp) =>{
+        res.status(200).json(dbresp.rows);
+            
+    });
+});
+
+
+app.post('/listitems/', function(req,res){
+    
+    console.log("inne i post listitems")
+    
+    var upload = JSON.parse(req.body);
+    
+       
+    let token = req.query.token;
+    let listeid = req.query.listeid;
+    
+    let logindata = jwt.verify(token, secret); //check the token
+    
+
+    var sql = `PREPARE insert_listitems (int, text, text, boolean, int, int) AS INSERT INTO listitems VALUES(DEFAULT, $2, $3, $4, $5, $6); EXECUTE insert_listitems (0, '${upload.itemname}', '${upload.itemdescription}', 'false', ${listeid},'${upload.amount}')`;
+
+    
+    let client = new Client({
         connectionString:process.env.DATABASE_URL || dbString,
         ssl:true
     });
 
     client.connect();
 
-    client.query("select * from listitems", (err,resp) =>{
-
+    client.query(sql, (err, resp) =>{
+        console.log(resp.rows)
         res.json(resp.rows).end();
         client.end();
     });
