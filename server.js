@@ -15,17 +15,12 @@ var access = function(req,res, next){
 	next();
 }
 
-
 app.set('port', (process.env.PORT || 3000));
 app.use(express.static('public'));
 app.use(bodyParser);
 app.use(access);
 
-
 app.get('/', function (req, res) {
-
-  //set headers
-  
 
   //set statusline and body - and send
   res.status(200).send('Hei verden!'); //status-line and body
@@ -35,27 +30,14 @@ app.get('/', function (req, res) {
 
 let dbString = "postgres://qiypkwjnjgwadw:ddf8a7f06464234473af6e17bd765d589a1ec038db7b514abdee5cf720293646@ec2-54-75-225-143.eu-west-1.compute.amazonaws.com:5432/da5jtj9gun137e";
 
-
-
 //---GET USERS
     app.get('/users/', function(req,res){
-
-        /*
-        let client = new Client({
-            connectionString:process.env.DATABASE_URL | 'postgres://postgres:root@localhost:5432/JustDoIt';
-            ssl:true
-        });
-        
-        */
-        
         
         let client = new Client({
             connectionString:process.env.DATABASE_URL || dbString,
             ssl:true
         });
         
-        
-
         client.connect();
 
         client.query("select * from users", (err,res) =>{
@@ -63,18 +45,13 @@ let dbString = "postgres://qiypkwjnjgwadw:ddf8a7f06464234473af6e17bd765d589a1ec0
             res.json(res.rows).end();
             client.end();
         });
-});
-
-
-//var users = require('./users.js');
-//app.use('/users/', users);
+    });
 
 //---POST USERS, opprett bruker
 app.post('/users/', bodyParser, function (req, res){
 
-    
     var upload = JSON.parse(req.body);
-    var encrPassw = sha256(upload.password); //hasher passordet
+    var encrPassw = sha256(upload.password);
 
     var sql = `PREPARE insert_users (int, text, text, text, text, text, int, boolean) AS
                 INSERT INTO users VALUES(DEFAULT, $2, $3, $4, $5, $6, $7, $8);
@@ -106,9 +83,6 @@ app.post('/users/', bodyParser, function (req, res){
    app.post('/users/auth/', bodyParser, function (req, res){
        
         let upload = JSON.parse(req.body);
-       
-       
-        console.log(upload);
        
         let encrPassw =  sha256(upload.password); //hasher passordet
        
@@ -150,37 +124,24 @@ app.post('/users/', bodyParser, function (req, res){
        });
    });
 
-
-
 //----GET LISTS
 
-    app.get('/lists/', bodyParser, function(req,res){
+app.get('/lists/', bodyParser, function(req,res){
         
-        console.log("inne i list")
-
-    let token = req.query.token;
-    
-        
+    let token = req.query.token;    
     let logindata = jwt.verify(token, secret); //check the token
-
-        
     let sql = `SELECT * FROM lists WHERE username='${logindata.username}'`;
 
-        let client = new Client({
-                connectionString:process.env.DATABASE_URL || dbString,
-                ssl:true
-        });
+    let client = new Client({
+            connectionString:process.env.DATABASE_URL || dbString,
+            ssl:true
+    });
        
-        client.connect();
+    client.connect();
 
-        client.query(sql, (err,dbresp) =>{
-
-           
-            res.status(200).json(dbresp.rows);
-            
-            
-       });
-
+    client.query(sql, (err,dbresp) =>{
+        res.status(200).json(dbresp.rows);
+     });
 });
 
 //------POST LISTE
@@ -188,7 +149,6 @@ app.post('/lists/', bodyParser, function (req, res){
     
     var upload = JSON.parse(req.body);
     let token = req.query.token;
-   
     
     let logindata = jwt.verify(token, secret); //check the token
     console.log(logindata);
@@ -214,7 +174,6 @@ app.post('/lists/', bodyParser, function (req, res){
 
 app.get('/listitems/',function(req,res){
     
-       
     let token = req.query.token;
     let listeid = req.query.listeid;
      
