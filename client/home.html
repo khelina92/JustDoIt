@@ -20,7 +20,6 @@
             <button onClick="window.location='createlist.html';" value="click here"id="seminelister">Lag ny liste</button>
 
             <button onClick="window.location='showlists.html';" value="click here"id="showlists">Se mine lister</button>
-            
             <button>Logg ut</button>
         </div>
     </div>
@@ -29,23 +28,15 @@
     
 <script>
     
-    
-    var opprettnyliste  = document.getElementById("opprettnyliste");
-    var seminelister  = document.getElementById("seminelister");
-    
+    let opprettnyliste  = document.getElementById("opprettnyliste");
+    let seminelister  = document.getElementById("seminelister");
     let object = JSON.parse(localStorage.getItem("logindata"));
-    
-    var url = "http://localhost:3000/users?token=" + object.username;
-    
+    let url = "http://localhost:3000/users?token=" + object.username;
     let fultnavn = object.username;
-    
-    document.getElementById("innlogget").innerHTML = fultnavn;
 
+    document.getElementById("innlogget").innerHTML = fultnavn;
     
 </script>
-
-
 <style>
 </style>
-
 </html>

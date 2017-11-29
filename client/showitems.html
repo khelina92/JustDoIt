@@ -5,34 +5,28 @@
     <meta charset="utf-8" />
     <title>Show items</title>    
     <script src="superfetch2.js"></script>
-    <style src="style.css" rel="stylesheet"></style>
+    <link href="style.css" rel="stylesheet">
 </head>
 
 <body>
-    
     <div id="box1">
-        
-            <h3 id="add">Add another item: </h3>
-            <h2 id="listid"></h2>
-            <input id="amount" placeholder="Amount" />
-            <input id="itemname" placeholder="Item" />
-            <input id="itemdescription" placeholder="Description" />
-            <button id="btncreate">Add</button>
+        <h3 id="add">Add another item: </h3>
+        <h2 id="listid"></h2>
+        <input id="amount" placeholder="Amount" />
+        <input id="itemname" placeholder="Item" />
+        <input id="itemdescription" placeholder="Description" />
+        <button id="btncreate">Add</button>
     </div>
 </body>
 
 <script> 
     
-    var inpamount = document.getElementById("amount");
-    var inpitemname = document.getElementById("itemname");
-    var inpitemdesc = document.getElementById("itemdescription");
-    var btncreate = document.getElementById("btncreate");
+    let inpamount = document.getElementById("amount");
+    let inpitemname = document.getElementById("itemname");
+    let inpitemdesc = document.getElementById("itemdescription");
+    let btncreate = document.getElementById("btncreate");
     
-    
-    
-    
-    var logindata = JSON.parse(localStorage.getItem("logindata"));
-    
+    let logindata = JSON.parse(localStorage.getItem("logindata"));
     
     let listeid = localStorage.getItem("listeid");
     let url = "http://localhost:3000/listitems/?token=" + logindata.token + "&listeid=" + listeid;
@@ -40,42 +34,26 @@
    
     document.getElementById("listid").innerHTML = listeid;
     
-    
-    
-    
-    
-    
-    
-    
     btncreate.onclick = createItem;
-    
-    
     
     function createItem() {
         
-        var upload = JSON.stringify({
+        let upload = JSON.stringify({
             amount: inpamount.value, 
             itemname: inpitemname.value,
-            itemdescription: inpitemdesc.value
-                       
+            itemdescription: inpitemdesc.value                   
         });
         
-        var fetchSettings = {
+        let fetchSettings = {
             method: "POST",
             body: upload
         }
         
-        var url = "http://localhost:3000/listitems/?token=" + logindata.token + "&listeid=" + listeid;
-        //var url = "http://localhost:3000/listitems/";
+        let url = "http://localhost:3000/listitems/?token=" + logindata.token + "&listeid=" + listeid;
         superfetch(url, "json", succcreate, error, fetchSettings);   
+        
+        location.reload();
     }
-    
-   
-    
-    //console.log(object.token);
-   
-    
-    
     
     //success --------------------------------------
     function succcreate(data) {
@@ -83,30 +61,39 @@
         if(logindata) {
             
             localStorage.setItem("itemdata", JSON.stringify(data));
-            //window.location.href = "showlists.html";
-            
         }
         else{
             console.log(data);
         }
-        
-        
     }
-        
-        
+         
     //success --------------------------------------
     function succliste(data) {
         
-    for (var i = 0; i < data.length; i++) {
-        var div = document.createElement("div");
-        div.innerHTML += "<h3>" + data[i].amount + "</h3>";
-        div.innerHTML += "<h3>" + data[i].itemname + "</h3>"; 
-        div.innerHTML += "<h3>" + data[i].itemdescription + "</h3>"; 
+        for (var i = 0; i < data.length; i++) {
         
-        document.body.appendChild(div);
+            var div = document.createElement("div");
+            div.id = 'box3';
+      
+            div.innerHTML += "<h3>Quantity: " + data[i].amount + "</h3>";
+            div.innerHTML += "<h3>Hva: " + data[i].itemname + "</h3>"; 
+            div.innerHTML += "<h3>Beskrivelse: " + data[i].itemdescription + "</h3>";   
         
+            var btnSlett = document.createElement("button");
+            btnSlett.innerHTML = "Slett";
+            btnSlett.addEventListener("click", slettefunc);
+            btnSlett.id = data[i].itemid;       
+            div.appendChild(btnSlett);
+        
+            document.body.appendChild(div);
+        }
     }
-}
+    
+    function slettefunc(evt) {
+        
+        var itemid = evt.currentTarget.id;
+        console.log(itemid)
+    }
     
     //error ----------------------------------------
     function error(err) {

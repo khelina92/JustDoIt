@@ -10,17 +10,16 @@
 
 <body>
     <div id="box1">
-    <h1 id="velkommen">Create new list</h1>
-    <h3 id="txtMsg"></h3>
-    <input id="inplistname" placeholder="List name" />
-    <input id="inplistdescription" placeholder="Description" />
-    <h3>Due by:</h3>
-    <input type="date" id="inpduedate">
-    <input id="inpduetime" placeholder="hh:mm:ss" />
-    <button id="btncreate">Create list</button>
-    <br>
-    <button onClick="window.location='showlists.html';" value="click here" id="seelists">Go to your lists</button>
-    
+        <h1 id="velkommen">Create new list</h1>
+        <h3 id="txtMsg"></h3>
+        <input id="inplistname" placeholder="List name" />
+        <input id="inplistdescription" placeholder="Description" />
+        <h3>Due by:</h3>
+        <input type="date" id="inpduedate">
+        <input id="inpduetime" placeholder="hh:mm:ss" />
+        <button id="btncreate">Create list</button>
+        <br>
+        <button onClick="window.location='showlists.html';" value="click here" id="seelists">Go to your lists</button>
     </div>
 </body>
 
@@ -42,7 +41,6 @@
         var m = month;
         d.setDate(i);
     
-    //få tak i logindata/token
     var logindata = JSON.parse(localStorage.getItem("logindata"));
     
     // -----------------------------------------------
@@ -63,8 +61,6 @@
         
         var url = "http://localhost:3000/lists?token=" + logindata.token;
         superfetch(url, "json", succ, error, fetchSettings);
-        
-        
     }
     
     
@@ -75,20 +71,18 @@
             
             localStorage.setItem("listedata", JSON.stringify(data));
             window.location.href = "showlists.html";
-            
         }
         else{
             console.log(data);
         }
-        
-        
     }
     
     //error ----------------------------------------
     function error(err) {
         console.log(err);
         
-    }   
+    }  
+    
 </script>
 
 </html>
