@@ -52,16 +52,13 @@
             body: upload
         }
         
-        
         superfetch(url, "json", succ, error, fetchSettings);
-        
     }
-    
     
     //success --------------------------------------
     function succ(data) {
         console.log(data);
-        window.location.href = "home.html";
+        window.location.href = "login.html";
         
     }
     
