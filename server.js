@@ -3,70 +3,83 @@ const express = require('express');
 const app = express(); //server-app
 const bodyParser = require('body-parser').text();
 const {Client} = require("pg");
-//var pgp = require('pg-promise')();
+var db = require('./dbconnect'); //database
+var jwt = require("jsonwebtoken");
+var sha256 = require('sha256');
 
-//pgp.pg.defaults.ssl = true;
+var secret = "frenchfriestastegood!";
+
+var access = function(req,res, next){
+	res.set('Access-Control-Allow-Origin', '*');
+    res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+	next();
+}
+
 
 app.set('port', (process.env.PORT || 3000));
 app.use(express.static('public'));
+app.use(bodyParser);
+app.use(access);
 
-app.use(function(req, res, next){    
-  //set headers
-  res.set('Access-Control-Allow-Origin', '*'); 
-  res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-  next();
-});
 
 app.get('/', function (req, res) {
-    
+
   //set headers
-  res.set('Access-Control-Allow-Origin', '*'); 
-  res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-    
+  
+
   //set statusline and body - and send
   res.status(200).send('Hei verden!'); //status-line and body
-
-    let staticApp = readTextFile("index.html");
-    res.send(staticApp);
-    
+  let staticApp = readTextFile("index.html");
+  res.send(staticApp);
 });
-
 
 let dbString = "postgres://qiypkwjnjgwadw:ddf8a7f06464234473af6e17bd765d589a1ec038db7b514abdee5cf720293646@ec2-54-75-225-143.eu-west-1.compute.amazonaws.com:5432/da5jtj9gun137e";
 
 
+
 //---GET USERS
     app.get('/users/', function(req,res){
+
+        /*
+        let client = new Client({
+            connectionString:process.env.DATABASE_URL | 'postgres://postgres:root@localhost:5432/JustDoIt';
+            ssl:true
+        });
         
-        res.set('Access-Control-Allow-Origin', '*'); 
-        res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+        */
+        
         
         let client = new Client({
             connectionString:process.env.DATABASE_URL || dbString,
             ssl:true
         });
+        
+        
 
         client.connect();
 
-        client.query("select * from users", (err,resp) =>{
-        
-            res.json(resp.rows).end();
+        client.query("select * from users", (err,res) =>{
+
+            res.json(res.rows).end();
             client.end();
         });
 });
 
-//---POST USERS
+
+//var users = require('./users.js');
+//app.use('/users/', users);
+
+//---POST USERS, opprett bruker
 app.post('/users/', bodyParser, function (req, res){
+
     
-    res.set('Access-Control-Allow-Origin', '*'); 
-    res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-   
     var upload = JSON.parse(req.body);
-        
-    var sql = `PREPARE insert_users (int, text, text, text, text, text, int, boolean) AS INSERT INTO users VALUES(DEFAULT, $2, $3, $4, $5, $6, $7, $8); EXECUTE insert_users (0, '${upload.username}', '${upload.password}', '${upload.firstname}','${upload.lastname}', 'bilde', 0, 'true' )`;
-    
-    console.log(sql)
-    
+    var encrPassw = sha256(upload.password); //hasher passordet
+
+    var sql = `PREPARE insert_users (int, text, text, text, text, text, int, boolean) AS
+                INSERT INTO users VALUES(DEFAULT, $2, $3, $4, $5, $6, $7, $8);
+                EXECUTE insert_users (0, '${upload.username}', '${encrPassw}', '${upload.firstname}','${upload.lastname}', 'bilde', 0, 'true' )`;
+
     let client = new Client({
             connectionString:process.env.DATABASE_URL || dbString,
             ssl:true
@@ -74,85 +87,181 @@ app.post('/users/', bodyParser, function (req, res){
 
     client.connect();
 
-    client.query(sql, (err,resp) =>{
+    client.query(sql, (err,dbresp) =>{
 
-        res.json({msg: "insert ok"}).end();
+        //create token
+        var payload = {username: upload.username, firstname: upload.firstname, lastname: upload.lastname};
+        var tok = jwt.sign(payload, secret, {expiresIn: "12h"});
+
+        //send logininfo + token to the client
+        res.status(200).json({username: upload.username, firstname: upload.firstname, lastname: upload.lastname, token: tok}).end();
+
+        //res.json({msg: "insert ok"}).end();
         client.end();
     });
-          
 });
+
+//-- LOG IN
+
+   app.post('/users/auth/', bodyParser, function (req, res){
+       
+        let upload = JSON.parse(req.body);
+       
+       
+        console.log(upload);
+       
+        let encrPassw =  sha256(upload.password); //hasher passordet
+       
+        let sql = `SELECT * FROM users WHERE username='${upload.username}'`;
+       
+       console.log(sql);
+        
+        let client = new Client({
+            connectionString:process.env.DATABASE_URL || dbString,
+            ssl:true
+        });
+       
+        client.connect();
+
+        client.query(sql, (err,dbresp) =>{
+
+            let dbpassw = dbresp.rows[0].password;
+            
+            if (dbresp.rows.length <= 0) {
+                dbresp.json({msg: "Vennligst skriv inn brukernavn"}).end();
+            }
+
+            else {
+                
+                if (dbpassw && encrPassw == dbpassw ){
+
+                    //create token
+                    let payload = {username: upload.username, firstname: upload.firstname, lastname: upload.lastname};
+                    let tok = jwt.sign(payload, secret, {expiresIn: "12h"});
+                    
+
+                    //send logininfo + token to the client
+                    res.status(200).json({username: upload.username, firstname: upload.firstname, lastname: upload.lastname, token: tok, msg:"du er logget inn"}).end();
+                }
+                else {
+                    res.status(401).json({msg: "Feil brukernavn og passord"}).end();
+                }
+            };
+       });
+   });
+
 
 
 //----GET LISTS
-    app.get('/lists/',function(req,res){
-    
-        res.set('Access-Control-Allow-Origin', '*'); 
-        res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-   
-        let client = new Client({
-        connectionString:process.env.DATABASE_URL || dbString,
-        ssl:true
-    });
 
-    client.connect();
-
-    client.query("select * from lists", (err,resp) =>{
+    app.get('/lists/', bodyParser, function(req,res){
         
-       
-        res.json(resp.rows).end();
-        client.end();
-    });
+        console.log("inne i list")
 
+    let token = req.query.token;
     
+        
+    let logindata = jwt.verify(token, secret); //check the token
+
+        
+    let sql = `SELECT * FROM lists WHERE username='${logindata.username}'`;
+
+        let client = new Client({
+                connectionString:process.env.DATABASE_URL || dbString,
+                ssl:true
+        });
+       
+        client.connect();
+
+        client.query(sql, (err,dbresp) =>{
+
+           
+            res.status(200).json(dbresp.rows);
+            
+            
+       });
+
 });
 
 //------POST LISTE
 app.post('/lists/', bodyParser, function (req, res){
     
-    res.set('Access-Control-Allow-Origin', '*'); 
-    res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-    
     var upload = JSON.parse(req.body);
-        
-    var sql = `PREPARE insert_lists (int, text, text, timestamp, date, time, boolean, int) AS INSERT INTO lists VALUES(DEFAULT, $2, $3, DEFAULT, $5, $6, $7, $8); EXECUTE insert_lists (null, '${upload.listname}', '${upload.listdescription}', null ,'${upload.duedate}', '${upload.duetime}', 'false', 0)`;
+    let token = req.query.token;
+   
     
-    console.log(sql)
+    let logindata = jwt.verify(token, secret); //check the token
+    console.log(logindata);
+    var sql = `PREPARE insert_lists (int, text, text, timestamp, date, time, boolean, text) AS INSERT INTO lists VALUES(DEFAULT, $2, $3, $4, $5, $6, $7, $8); EXECUTE insert_lists (0, '${upload.listname}', '${upload.listdescription}', '2017-11-22 12:53','${upload.duedate}', '${upload.duetime}', 'false', '${logindata.username}')`;
+
     
     let client = new Client({
-            connectionString:process.env.DATABASE_URL || dbString,
-            ssl:true
-    });
-
-    client.connect();
-
-    client.query(sql, (err,resp) =>{
-        
-        //console.log("inne i qutr");
-
-        //res.json({msg: "insert ok for list"}).end();
-        res.json(err).end();
-        client.end();
-    });
-    
-});
-        
-//----GET ITEMS
-
-    app.get('/listitems/',function(req,res){
-        
-        res.set('Access-Control-Allow-Origin', '*'); 
-        res.set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-   
-       let client = new Client({
         connectionString:process.env.DATABASE_URL || dbString,
         ssl:true
     });
 
     client.connect();
 
-    client.query("select * from listitems", (err,resp) =>{
-        
+    client.query(sql, (err, resp) =>{
+
+        res.json(err).end();
+        client.end();
+    });
+
+});
+
+//----GET ITEMS
+/*
+app.get('/listitems/',function(req,res){
+    
        
+    let token = req.query.token;
+     
+    let logindata = jwt.verify(token, secret); //check the token
+ 
+    let sql = `SELECT * FROM listitems WHERE username='${logindata.username}'`;
+
+        let client = new Client({
+                connectionString:process.env.DATABASE_URL || dbString,
+                ssl:true
+        });
+       
+        client.connect();
+
+        client.query(sql, (err,dbresp) =>{
+
+        res.status(200).json(dbresp.rows);
+            
+    });
+
+});
+
+*/
+
+app.post('/listitems/', function(req,res){
+    
+    console.log("inne i post listitems")
+    
+    var upload = JSON.parse(req.body);
+    
+       
+    let token = req.query.token;
+    
+    let logindata = jwt.verify(token, secret); //check the token
+    
+
+    var sql = `PREPARE insert_listitems (int, text, text, boolean, int, int) AS INSERT INTO listitems VALUES(DEFAULT, $2, $3, $4, $5, $6); EXECUTE insert_listitems (0, '${upload.itemname}', '${upload.itemdescription}', 'false', 93,'${upload.amount}')`;
+
+    
+    let client = new Client({
+        connectionString:process.env.DATABASE_URL || dbString,
+        ssl:true
+    });
+
+    client.connect();
+
+    client.query(sql, (err, resp) =>{
+        console.log(resp.rows)
         res.json(resp.rows).end();
         client.end();
     });
@@ -160,19 +269,18 @@ app.post('/lists/', bodyParser, function (req, res){
 });
 
 //----DELETE LISTS
+
 app.delete('/lists/', function (req,res){
     
     var upload = req.query.listid;
     
-    console.log(upload);
-    
+   
     var sql = `PREPARE delete_list (int) AS DELETE FROM lists WHERE listid=$1 RETURNING *; EXECUTE delete_list('${upload}')`;
     
     let client = new Client({
             connectionString:process.env.DATABASE_URL || dbString,
             ssl:true
     });
-    
 
     client.connect();
 
@@ -186,32 +294,12 @@ app.delete('/lists/', function (req,res){
             res.status(200).json({msg: "can't delete"});
         }
         
-    client.end();
+        client.end();
 
     });      
 });
 
 
-
-
-    /*db.any(sql).then(function(data) {
-        
-        db.any("DEALLOCATE delete_list");
-        
-        if (data.length > 0) {
-            res.status(200).json({msg: "delete ok"}); //success
-        }
-        else{
-            res.status(200).json({msg: "can't delete"});
-        }
-    }).catch(function(err) {
-        res.status(500).json(err);
-    });
-});
-*/
-
-
     app.listen(3000, function () {
         console.log('Server listening on port 3000!!!!');
     });
-
