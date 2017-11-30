@@ -255,6 +255,35 @@ app.delete('/lists/', function (req,res){
     });      
 });
 
+//----DELETE LISTITEMS
+app.delete('/listitems/', function (req,res){
+    
+    var upload = req.query.itemid;
+    
+    var sql = `PREPARE delete_item (int) AS DELETE FROM listitems WHERE itemid=$1 RETURNING *; EXECUTE delete_item('${upload}')`;
+    
+    let client = new Client({
+            connectionString:process.env.DATABASE_URL || dbString,
+            ssl:true
+    });
+
+    client.connect();
+
+    client.query(sql, (err,resp) =>{
+
+        //res.json({msg: "delete ok"}).end();
+        if (!err) {
+            res.status(200).json({msg: "item delete ok"});
+        }
+        else{
+            res.status(200).json({msg: "can't delete item"});
+        }
+        
+        client.end();
+
+    });      
+});
+
 
     app.listen(3000, function () {
         console.log('Server listening on port 3000!!!!');
