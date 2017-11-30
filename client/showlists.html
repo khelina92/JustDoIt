@@ -10,31 +10,17 @@
 
 <body>
     <div id="box1">
-        <h3 id="delete">Slett liste: </h3>
-        <input id="deletelist" placeholder="List ID" />
-        <button id="btncreate">Delete</button>
+        <h1>My lists:</h1>
+        <button onClick="window.location='createlist.html';" value="click here" id="seelists">Make more lists</button>
     </div>
 </body>
 
 <script> 
     
-    var inpdeletelist = document.getElementById("deletelist");
-    var btncreate = document.getElementById("btncreate");
-    
     let object = JSON.parse(localStorage.getItem("logindata"));
-    
     var url = "http://localhost:3000/lists?token=" + object.token;
    
     superfetch(url, "json", succ, error);
-    
-    btncreate.onclick = function() {
-        
-        window.location.href = "showlists.html";
-        
-        var url = "http://localhost:3000/lists/?listid=" + inpdeletelist.value;
-        
-        superfetch(url, "json", delSucc, error, {method: "DELETE"}); 
-    }
     
     //success --------------------------------------
     function succ(data) {   
@@ -61,7 +47,8 @@
             var btnAdd = document.createElement("button");
             btnAdd.innerHTML = "Legg til item";
             btnAdd.addEventListener("click", addfunc);
-            btnAdd.id = data[i].listid;        
+            btnAdd.id = data[i].listid;
+            btnAdd.listname = data[i].listname;
             div.appendChild(btnAdd);
         
             document.body.appendChild(div);
@@ -79,12 +66,21 @@
     
     function slettefunc(evt) {
         var listeid = evt.currentTarget.id;
-        console.log(listeid)
+        
+        window.location.href = "showlists.html";
+        
+        var url = "http://localhost:3000/lists/?listid=" + listeid;
+        
+        superfetch(url, "json", delSucc, error, {method: "DELETE"});
+        
+       
     }
     
     function addfunc(evt) {
         var listeid = evt.currentTarget.id;
+        var listname = evt.currentTarget.listname;
         localStorage.setItem("listeid", listeid);
+        localStorage.setItem("listname", listname);
         window.location.href = "showitems.html";
     }
     
