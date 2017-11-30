@@ -13,6 +13,7 @@
     <div id="box1">
         
             <h3 id="add">Add another item: </h3>
+            <h2 id="listid"></h2>
             <input id="amount" placeholder="Amount" />
             <input id="itemname" placeholder="Item" />
             <input id="itemdescription" placeholder="Description" />
@@ -26,10 +27,18 @@
     var inpitemname = document.getElementById("itemname");
     var inpitemdesc = document.getElementById("itemdescription");
     var btncreate = document.getElementById("btncreate");
-    
-    btncreate.onclick = createItem;
+    //var btndelete = document.getElementById("btndelete");
     
     var logindata = JSON.parse(localStorage.getItem("logindata"));
+    
+    
+    let listeid = localStorage.getItem("listeid");
+    let url = "http://localhost:3000/listitems/?token=" + logindata.token + "&listeid=" + listeid;
+    superfetch(url, "json", succliste, error);
+   
+    document.getElementById("listid").innerHTML = listeid;
+    
+    btncreate.onclick = createItem;
     
     function createItem() {
         
@@ -45,22 +54,14 @@
             body: upload
         }
         
-        var url = "http://localhost:3000/listitems/?token=" + logindata.token;
+        var url = "http://localhost:3000/listitems/?token=" + logindata.token + "&listeid=" + listeid;
         //var url = "http://localhost:3000/listitems/";
-        superfetch(url, "json", succ, error, fetchSettings);   
+        superfetch(url, "json", succcreate, error, fetchSettings);   
     }
-    
-    let object = JSON.parse(localStorage.getItem("logindata"));
-    
-    var url = "http://localhost:3000/listitems/?token=" + object.token;
-    
-    //console.log(object.token);
-   
-    //superfetch(url, "json", succ, error);
     
     
     //success --------------------------------------
-    function succ(data) {
+    function succcreate(data) {
         
         if(logindata) {
             
@@ -70,20 +71,23 @@
         }
         else{
             console.log(data);
-        }
-        
-        
+        }   
     }
-        
-        
+              
     //success --------------------------------------
-    function succ(data) {
+    function succliste(data) {
         
     for (var i = 0; i < data.length; i++) {
         var div = document.createElement("div");
         div.innerHTML += "<h3>" + data[i].amount + "</h3>";
         div.innerHTML += "<h3>" + data[i].itemname + "</h3>"; 
         div.innerHTML += "<h3>" + data[i].itemdescription + "</h3>"; 
+        
+        var btnSlett = document.createElement("button");
+        btnSlett.innerHTML = "Slett";
+        btnSlett.addEventListener("click", slettefunc);
+        btnSlett.id = data[i].itemid;       
+        div.appendChild(btnSlett);
         
         document.body.appendChild(div);
         
@@ -94,6 +98,23 @@
     function error(err) {
         console.log(err);
     } 
+    
+    function delSucc(data){
+        console.log(data);
+    }
+    
+    function slettefunc(evt) {
+        
+        var itemid = evt.currentTarget.id;
+        
+        window.location.href = "showitems.html";
+        
+        var url = "http://localhost:3000/listitems/?itemid=" + itemid;
+        
+        superfetch(url, "json", delSucc, error, {method: "DELETE"});
+        
+        console.log(itemid);
+    }
     
 </script>
 
