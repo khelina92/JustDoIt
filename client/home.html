@@ -12,22 +12,26 @@
 <body>
     <div id="box1">
         <div id="index">
-            <h1 id="velkommen">Velkommen</h1>
+            <h1 id="velkommen">Welcome</h1>
             <h3 id="innlogget"></h3>
             <br>
             <br>
         
-            <button onClick="window.location='createlist.html';" value="click here"id="seminelister">Lag ny liste</button>
+            <button onClick="window.location='createlist.html';" value="click here"id="seminelister">Make a new list</button>
 
-            <button onClick="window.location='showlists.html';" value="click here"id="showlists">Se mine lister</button>
-            <button>Logg ut</button>
+            <button onClick="window.location='showlists.html';" value="click here"id="showlists">Look at my lists</button>
+            
+            <button id ="btnlogout">Log out</button>
         </div>
     </div>
 
 </body>
     
 <script>
-    
+    //logout knapp
+    var btnlogout = document.getElementById("btnlogout");
+    btnlogout.onclick = btnlogoutUser;       
+
     let opprettnyliste  = document.getElementById("opprettnyliste");
     let seminelister  = document.getElementById("seminelister");
     let object = JSON.parse(localStorage.getItem("logindata"));
@@ -35,6 +39,13 @@
     let fultnavn = object.username;
 
     document.getElementById("innlogget").innerHTML = fultnavn;
+    
+    //forsøk på å slette brukerinfo fra localStorage
+    function btnlogoutUser(){
+        localStorage.clear("btnlogout");
+        window.location.href = "login.html";
+    }
+    
     
 </script>
 <style>
