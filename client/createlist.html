@@ -20,6 +20,7 @@
     <button id="btncreate">Create list</button>
     <br>
     <button onClick="window.location='showlists.html';" value="click here" id="seelists">Go to your lists</button>
+    <button onClick="window.location='home.html';">Home</button>
     
     </div>
 </body>
@@ -42,6 +43,9 @@
         var m = month;
         d.setDate(i);
     
+    //få tak i logindata/token
+    var logindata = JSON.parse(localStorage.getItem("logindata"));
+    
     // -----------------------------------------------
     function createList() {
         
@@ -58,7 +62,7 @@
             body: upload
         }
         
-        var url = "http://localhost:3000/lists/";
+        var url = "http://localhost:3000/lists?token=" + logindata.token;
         superfetch(url, "json", succ, error, fetchSettings);
         
         
@@ -68,18 +72,17 @@
     //success --------------------------------------
     function succ(data) {
         
-        console.log(data);
-        
-        if(data) {
+        if(logindata) {
             
             localStorage.setItem("listedata", JSON.stringify(data));
             window.location.href = "showlists.html";
             
         }
-        else {
-            txtMsg.innerHTML = "Something went wrong. Please try again later";
+        else{
+            console.log(data);
         }
-    
+        
+        
     }
     
     //error ----------------------------------------
@@ -87,7 +90,6 @@
         console.log(err);
         
     }   
-
 </script>
 
 </html>

@@ -9,61 +9,52 @@
 </head>
 
 <body>
-    
     <div id="box1">
-        
-            <h3>Lister</h3>
-            
+        <h1>My lists:</h1>
+        <button onClick="window.location='createlist.html';" value="click here" id="seelists">Make more lists</button>
+        <button onClick="window.location='home.html';">Home</button>
     </div>
 </body>
 
 <script> 
     
     let object = JSON.parse(localStorage.getItem("logindata"));
-    
     var url = "http://localhost:3000/lists?token=" + object.token;
-    
-    console.log(object.token);
    
     superfetch(url, "json", succ, error);
     
-    
-    
-    
     //success --------------------------------------
-    function succ(data) {
+    function succ(data) {   
         
-    for (var i = 0; i < data.length; i++) {
+        for (var i = 0; i < data.length; i++) {
         
-        var d = new Date(data[i].duedate).toDateString();
+            let d = new Date(data[i].duedate).toDateString();
        
+            let div = document.createElement("div");
+            div.id = 'box2';
         
-        var div = document.createElement("div");
-        div.id = 'box2';
+            div.innerHTML += "<h2>" + data[i].listname + "</h2>"; 
+            div.innerHTML += "<h4>Description: " + data[i].listdescription + "</h4>";
+            div.innerHTML += "<h4>Due time: " + data[i].duetime + "</h4>"; 
+            div.innerHTML += "<h4>Duedate: " + d + "</h4>";  
+            
         
+            var btnSlett = document.createElement("button");
+            btnSlett.innerHTML = "Delete";
+            btnSlett.addEventListener("click", slettefunc);
+            btnSlett.id = data[i].listid;       
+            div.appendChild(btnSlett);
         
-        div.innerHTML += "<h3>Listenavn: " + data[i].listname + "</h3>"; 
-        div.innerHTML += "<h3>Description: " + data[i].listdescription + "</h3>";
-        div.innerHTML += "<h3>Due time: " + data[i].duetime + "</h3>"; 
-        div.innerHTML += "<h3>Duedate: " + d + "</h3>";  
-        div.innerHTML += "<h3>ID: " + data[i].listid + "</h3>";
+            var btnAdd = document.createElement("button");
+            btnAdd.innerHTML = "Add an item";
+            btnAdd.addEventListener("click", addfunc);
+            btnAdd.id = data[i].listid;
+            btnAdd.listname = data[i].listname;
+            div.appendChild(btnAdd);
         
-        var btnSlett = document.createElement("button");
-        btnSlett.innerHTML = "Slett";
-        btnSlett.addEventListener("click", slettefunc);
-        btnSlett.id = data[i].listid;       
-        div.appendChild(btnSlett);
-        
-        var btnAdd = document.createElement("button");
-        btnAdd.innerHTML = "Legg til item";
-        btnAdd.addEventListener("click", addfunc);
-        btnAdd.id = data[i].listid;        
-        div.appendChild(btnAdd);
-        
-        document.body.appendChild(div);
-        
+            document.body.appendChild(div);
+        }
     }
-}
     
     //error ----------------------------------------
     function error(err) {
@@ -75,31 +66,24 @@
     }
     
     function slettefunc(evt) {
-        
         var listeid = evt.currentTarget.id;
-        
-        console.log(listeid)
         
         window.location.href = "showlists.html";
         
         var url = "http://localhost:3000/lists/?listid=" + listeid;
         
         superfetch(url, "json", delSucc, error, {method: "DELETE"});
+        
+       
     }
     
     function addfunc(evt) {
-        
         var listeid = evt.currentTarget.id;
-        
+        var listname = evt.currentTarget.listname;
         localStorage.setItem("listeid", listeid);
-        
-        
+        localStorage.setItem("listname", listname);
         window.location.href = "showitems.html";
-        
     }
-    
-    
-    
     
 </script>
 
