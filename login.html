@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>text in-out template</title>
+    <script src="superfetch2.js"></script>
+    <link href="style.css" rel="stylesheet">
+    
+</head>
+
+<body>
+    <div id="box1">
+        <h1 id="velkommen">Log in</h1>
+    <input type ="text"     id="username" placeholder="Login name" />
+    <input type="password"  id="password" placeholder="Password"  />
+
+    <button id="btnlogin">Log in</button>
+    <button onClick="window.location='createuser.html';" value="click here"id="seminelister">Create new user</button>
+    <br>
+    <div id="txtOut"></div>
+    </div>
+</body>
+
+<script>
+
+    // init ------------------------------------------
+    var username  = document.getElementById("username");
+    var password  = document.getElementById("password");
+    
+    var btnlogin = document.getElementById("btnlogin");
+    var txtOut    = document.getElementById("txtOut");
+
+    //var respStatus;
+
+    btnlogin.onclick = loginUser;       
+
+    // ----------------------------------------------
+    function loginUser() { 
+        
+        var upload = JSON.stringify({
+            username:username.value, 
+            password: password.value
+        })
+        
+        var cfg = {
+            method: "POST",
+            body: upload
+        }
+        
+        var url = "https://serverjustdoit.herokuapp.com/users/auth/";
+        superfetch(url, "json", succ, error, cfg);   
+       
+    }
+    
+    // succ ------------------------------------------------
+    
+    
+     //success --------------------------------------
+    function succ(data) {
+       
+        localStorage.setItem("logindata", JSON.stringify(data));
+         console.log(data);
+        window.location.href = "home.html";
+        
+    }
+    
+    //error ----------------------------------------
+    function error(err) {
+        console.log(err);
+    }   
+     
+</script>
+
+</html>
+

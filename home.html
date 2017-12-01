@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Just do it</title>
+    <script src="superfetch2.js"></script>
+    <link href="style.css" rel="stylesheet">
+    <link href="login.html">
+</head>
+
+<body>
+    <div id="box1">
+        <div id="index">
+            <h1 id="velkommen">Welcome</h1>
+            <h3 id="innlogget"></h3>
+            <br>
+            <br>
+        
+            <button onClick="window.location='createlist.html';" value="click here"id="seminelister">Make a new list</button>
+
+            <button onClick="window.location='showlists.html';" value="click here"id="showlists">Look at my lists</button>
+            
+            <button id ="btnlogout">Log out</button>
+        </div>
+    </div>
+
+</body>
+    
+<script>
+    //logout knapp
+    var btnlogout = document.getElementById("btnlogout");
+    btnlogout.onclick = btnlogoutUser;       
+
+    let opprettnyliste  = document.getElementById("opprettnyliste");
+    let seminelister  = document.getElementById("seminelister");
+    let object = JSON.parse(localStorage.getItem("logindata"));
+    let url = "http://localhost:3000/users?token=" + object.username;
+    let fultnavn = object.username;
+
+    document.getElementById("innlogget").innerHTML = fultnavn;
+    
+    //forsøk på å slette brukerinfo fra localStorage
+    function btnlogoutUser(){
+        localStorage.clear("btnlogout");
+        window.location.href = "login.html";
+    }
+    
+    
+</script>
+<style>
+</style>
+</html>
