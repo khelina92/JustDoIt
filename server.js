@@ -15,7 +15,7 @@ var access = function(req,res, next){
 	next();
 }
 
-app.set('port', (process.env.PORT || 3000));
+//app.set('port', (process.env.PORT || 3000));
 app.use(express.static('public'));
 app.use(bodyParser);
 app.use(access);
@@ -283,8 +283,9 @@ app.delete('/listitems/', function (req,res){
 
     });      
 });
+    
+    var port = process.env.port || 3000;
 
-
-    app.listen(function () {
-        console.log('Server listening on port 3000!!!!');
+    app.listen(port, function () {
+        console.log('Server listening on port: ' + port);
     });
