@@ -20,13 +20,13 @@ app.use(express.static('public'));
 app.use(bodyParser);
 app.use(access);
 
-app.get('/', function (req, res) {
+/*app.get('/', function (req, res) {
 
   //set statusline and body - and send
   res.status(200).send('Hei verden!'); //status-line and body
   let staticApp = readTextFile("login.html");
   res.send(staticApp);
-});
+});*/
 
 let dbString = "postgres://qiypkwjnjgwadw:ddf8a7f06464234473af6e17bd765d589a1ec038db7b514abdee5cf720293646@ec2-54-75-225-143.eu-west-1.compute.amazonaws.com:5432/da5jtj9gun137e";
 
