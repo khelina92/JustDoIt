@@ -174,16 +174,20 @@ app.post('/lists/', bodyParser, function (req, res){
 
 app.get('/listitems/',function(req,res){
     
-    let token = req.query.token;
+      console.log("inne i post listitems")
+    
+    //let token = req.query.token;
     let listeid = req.query.listeid;
      
-    let logindata = jwt.verify(token, secret); //check the token
+    //let logindata = jwt.verify(token, secret); //check the token
  
     let sql = `SELECT * FROM listitems WHERE listid='${listeid}'`;
         let client = new Client({
                 connectionString:process.env.DATABASE_URL || dbString,
                 ssl:true
         });
+    
+   
        
         client.connect();
         client.query(sql, (err,dbresp) =>{
@@ -195,7 +199,7 @@ app.get('/listitems/',function(req,res){
 
 app.post('/listitems/', function(req,res){
     
-    console.log("inne i post listitems")
+  
     
     var upload = JSON.parse(req.body);
     
@@ -206,7 +210,10 @@ app.post('/listitems/', function(req,res){
     let logindata = jwt.verify(token, secret); //check the token
     
 
-    var sql = `PREPARE insert_listitems (int, text, text, boolean, int, int) AS INSERT INTO listitems VALUES(DEFAULT, $2, $3, $4, $5, $6); EXECUTE insert_listitems (0, '${upload.itemname}', '${upload.itemdescription}', 'false', ${listeid},'${upload.amount}')`;
+    var sql = `PREPARE insert_listitems (int, text, text, boolean, int, int) AS INSERT INTO listitems VALUES(DEFAULT, $2, $3, $4, $5, $6); EXECUTE insert_listitems (0, '${upload.itemname}', '${upload.itemdescription}', 'false', ${listeid},${upload.amount})`;
+    
+    
+   
 
     
     let client = new Client({
@@ -217,8 +224,8 @@ app.post('/listitems/', function(req,res){
     client.connect();
 
     client.query(sql, (err, resp) =>{
-        console.log(resp.rows)
-        res.json(resp.rows).end();
+        console.log("feil? ", err)
+        res.json({msg: "insert ok"}).end();
         client.end();
     });
 
