@@ -15,18 +15,10 @@ var access = function(req,res, next){
 	next();
 }
 
-//app.set('port', (process.env.PORT || 3000));
 app.use(express.static('client'));
 app.use(bodyParser);
 app.use(access);
 
-/*app.get('/', function (req, res) {
-
-  //set statusline and body - and send
-  res.status(200).send('Hei verden!'); //status-line and body
-  let staticApp = readTextFile("login.html");
-  res.send(staticApp);
-});*/
 
 let dbString = "postgres://qiypkwjnjgwadw:ddf8a7f06464234473af6e17bd765d589a1ec038db7b514abdee5cf720293646@ec2-54-75-225-143.eu-west-1.compute.amazonaws.com:5432/da5jtj9gun137e";
 
@@ -73,14 +65,13 @@ app.post('/users/', bodyParser, function (req, res){
         //send logininfo + token to the client
         res.status(200).json({username: upload.username, firstname: upload.firstname, lastname: upload.lastname, token: tok}).end();
 
-        //res.json({msg: "insert ok"}).end();
         client.end();
     });
 });
 
 //-- LOG IN
 
-   app.post('/users/auth/', bodyParser, function (req, res){
+app.post('/users/auth/', bodyParser, function (req, res){
        
         let upload = JSON.parse(req.body);
        
@@ -121,8 +112,8 @@ app.post('/users/', bodyParser, function (req, res){
                     res.status(401).json({msg: "Feil brukernavn og passord"}).end();
                 }
             };
-       });
-   });
+        });
+});
 
 //----GET LISTS
 
@@ -151,7 +142,7 @@ app.post('/lists/', bodyParser, function (req, res){
     let token = req.query.token;
     
     let logindata = jwt.verify(token, secret); //check the token
-    console.log(logindata);
+    
     var sql = `PREPARE insert_lists (int, text, text, timestamp, date, time, boolean, text) AS INSERT INTO lists VALUES(DEFAULT, $2, $3, $4, $5, $6, $7, $8); EXECUTE insert_lists (0, '${upload.listname}', '${upload.listdescription}', '2017-11-22 12:53','${upload.duedate}', '${upload.duetime}', 'false', '${logindata.username}')`;
 
     
@@ -174,8 +165,7 @@ app.post('/lists/', bodyParser, function (req, res){
 
 app.get('/listitems/',function(req,res){
     
-      console.log("inne i post listitems")
-    
+     
     //let token = req.query.token;
     let listeid = req.query.listeid;
      
@@ -199,8 +189,6 @@ app.get('/listitems/',function(req,res){
 
 app.post('/listitems/', function(req,res){
     
-  
-    
     var upload = JSON.parse(req.body);
     
        
@@ -212,10 +200,7 @@ app.post('/listitems/', function(req,res){
 
     var sql = `PREPARE insert_listitems (int, text, text, boolean, int, int) AS INSERT INTO listitems VALUES(DEFAULT, $2, $3, $4, $5, $6); EXECUTE insert_listitems (0, '${upload.itemname}', '${upload.itemdescription}', 'false', ${listeid},${upload.amount})`;
     
-    
-   
-
-    
+ 
     let client = new Client({
         connectionString:process.env.DATABASE_URL || dbString,
         ssl:true
@@ -249,7 +234,7 @@ app.delete('/lists/', function (req,res){
 
     client.query(sql, (err,resp) =>{
 
-        //res.json({msg: "delete ok"}).end();
+        
         if (!err) {
             res.status(200).json({msg: "delete ok"});
         }
@@ -278,7 +263,7 @@ app.delete('/listitems/', function (req,res){
 
     client.query(sql, (err,resp) =>{
 
-        //res.json({msg: "delete ok"}).end();
+        
         if (!err) {
             res.status(200).json({msg: "item delete ok"});
         }
