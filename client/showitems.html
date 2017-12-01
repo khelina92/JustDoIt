@@ -20,6 +20,8 @@
         <button onClick="window.location='showlists.html';" value="click here"id="seminelister">Done</button>
         <button onClick="window.location='home.html';">Home</button>
     </div>
+    
+    <div id="cont"></div>
 </body>
 
 <script> 
@@ -28,6 +30,7 @@
     let inpitemname = document.getElementById("itemname");
     let inpitemdesc = document.getElementById("itemdescription");
     let btncreate = document.getElementById("btncreate");
+    let cont = document.getElementById("cont");
     
     let logindata = JSON.parse(localStorage.getItem("logindata"));
     
@@ -35,12 +38,18 @@
     let listname = localStorage.getItem("listname");
     
     let url = "https://serverjustdoit.herokuapp.com/listitems/?token=" + logindata.token + "&listeid=" + listeid;
+    //let url = "http://localhost:3000/listitems/?token=" + logindata.token + "&listeid=" + listeid;
     
-    superfetch(url, "json", succliste, error);
+    console.log(url)
+    
+    //vis liste til å begynne med
+    refreshItems();
    
     document.getElementById("listid").innerHTML = listeid;
     
-    let urllistname = "https://serverjustdoit.herokuapp.com/lists/?token=" + "listname" + listname
+    let urllistname = "https://serverjustdoit.herokuapp.com/lists/?token=" + "listname" + listname;
+    //let urllistname = "http://localhost:3000/lists/?token=" + "listname" + listname
+    
     document.getElementById("listname").innerHTML = listname;
     
     btncreate.onclick = createItem;
@@ -58,43 +67,31 @@
             body: upload
         }
         
-        let url = "https://serverjustdoit.herokuapp.com/?token=" + logindata.token + "&listeid=" + listeid;
+        //let url = "https://serverjustdoit.herokuapp.com/?token=" + logindata.token + "&listeid=" + listeid;
+        
+          let url = "http://localhost:3000/listitems/?token=" + logindata.token + "&listeid=" + listeid;
+        
         superfetch(url, "json", succcreate, error, fetchSettings);   
-        window.location.href = "showitems.html";
+        //window.location.href = "showitems.html";
     }
     
     //success --------------------------------------
     function succcreate(data) {
         
+        console.log("suksess")
+        
         if(logindata) {
             
             localStorage.setItem("itemdata", JSON.stringify(data));
+            
+            refreshItems();
         }
         else{
             console.log(data);
         }
     }
          
-    //success --------------------------------------
-    function succliste(data) {
-        
-        for (var i = 0; i < data.length; i++) {
-        
-            var div = document.createElement("div");
-            div.id = 'box3';
-            
-            div.innerHTML += "<h3>" + data [i].amount + " " + data[i].itemname + "</h3>"; 
-            div.innerHTML += "<h3>Description: " + data[i].itemdescription + "</h3>";
-            
-            var btnSlett = document.createElement("button");
-            btnSlett.innerHTML = "Slett";
-            btnSlett.addEventListener("click", slettefunc);
-            btnSlett.id = data[i].itemid;       
-            div.appendChild(btnSlett);
-        
-            document.body.appendChild(div);
-        } 
-    }
+   
     
     function error(err) {
         console.log(err);
@@ -112,13 +109,44 @@
         var url = "https://serverjustdoit.herokuapp.com/listitems/?itemid=" + itemid;
         
         superfetch(url, "json", delSucc, error, {method: "DELETE"});
-        location.reload();
+        //location.reload();
+        refreshItems();
     }
     
     //error ----------------------------------------
     function error(err) {
         console.log(err);
-    } 
+    }
+    
+    function refreshItems() {
+        superfetch(url, "json", function(data){
+            
+            console.log(data);
+            
+            cont.innerHTML = "";
+            
+            for (var i = 0; i < data.length; i++) {
+
+                var div = document.createElement("div");
+                div.id = 'box3';
+
+                div.innerHTML += "<h3>" + data [i].amount + " " + data[i].itemname + "</h3>"; 
+                div.innerHTML += "<h3>Description: " + data[i].itemdescription + "</h3>";
+
+                var btnSlett = document.createElement("button");
+                btnSlett.innerHTML = "Slett";
+                btnSlett.addEventListener("click", slettefunc);
+                btnSlett.id = data[i].itemid;       
+                div.appendChild(btnSlett);
+
+                cont.appendChild(div);
+            }           
+            
+            
+        }, error);
+        
+     
+    }
     
 </script>
 
