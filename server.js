@@ -24,7 +24,7 @@ app.get('/', function (req, res) {
 
   //set statusline and body - and send
   res.status(200).send('Hei verden!'); //status-line and body
-  let staticApp = readTextFile("index.html");
+  let staticApp = readTextFile("login.html");
   res.send(staticApp);
 });
 
@@ -284,7 +284,7 @@ app.delete('/listitems/', function (req,res){
     });      
 });
     
-    var port = process.env.port || 3000;
+    var port = process.env.PORT || 3000;
 
     app.listen(port, function () {
         console.log('Server listening on port: ' + port);
