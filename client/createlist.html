@@ -59,7 +59,7 @@
             body: upload
         }
         
-        var url = "http://localhost:3000/lists?token=" + logindata.token;
+        var url = "https://serverjustdoit.herokuapp.com/lists?token=" + logindata.token;
         superfetch(url, "json", succ, error, fetchSettings);
     }
     

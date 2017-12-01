@@ -34,13 +34,13 @@
     let listeid = localStorage.getItem("listeid");
     let listname = localStorage.getItem("listname");
     
-    let url = "http://localhost:3000/listitems/?token=" + logindata.token + "&listeid=" + listeid;
+    let url = "https://serverjustdoit.herokuapp.com/listitems/?token=" + logindata.token + "&listeid=" + listeid;
     
     superfetch(url, "json", succliste, error);
    
     document.getElementById("listid").innerHTML = listeid;
     
-    let urllistname = "http://localhost:3000/lists/?token=" + "listname" + listname
+    let urllistname = "https://serverjustdoit.herokuapp.com/lists/?token=" + "listname" + listname
     document.getElementById("listname").innerHTML = listname;
     
     btncreate.onclick = createItem;
@@ -58,7 +58,7 @@
             body: upload
         }
         
-        let url = "http://localhost:3000/listitems/?token=" + logindata.token + "&listeid=" + listeid;
+        let url = "https://serverjustdoit.herokuapp.com/?token=" + logindata.token + "&listeid=" + listeid;
         superfetch(url, "json", succcreate, error, fetchSettings);   
         window.location.href = "showitems.html";
     }
@@ -109,7 +109,7 @@
         
         var itemid = evt.currentTarget.id;
         
-        var url = "http://localhost:3000/listitems/?itemid=" + itemid;
+        var url = "https://serverjustdoit.herokuapp.com/listitems/?itemid=" + itemid;
         
         superfetch(url, "json", delSucc, error, {method: "DELETE"});
         location.reload();

@@ -19,7 +19,7 @@
 <script> 
     
     let object = JSON.parse(localStorage.getItem("logindata"));
-    var url = "http://localhost:3000/lists?token=" + object.token;
+    var url = "https://serverjustdoit.herokuapp.com/lists?token=" + object.token;
    
     superfetch(url, "json", succ, error);
     
@@ -70,7 +70,7 @@
         
         window.location.href = "showlists.html";
         
-        var url = "http://localhost:3000/lists/?listid=" + listeid;
+        var url = "https://serverjustdoit.herokuapp.com/lists/?listid=" + listeid;
         
         superfetch(url, "json", delSucc, error, {method: "DELETE"});
         
