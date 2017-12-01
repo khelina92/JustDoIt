@@ -16,7 +16,7 @@ var access = function(req,res, next){
 }
 
 //app.set('port', (process.env.PORT || 3000));
-app.use(express.static('public'));
+app.use(express.static('client'));
 app.use(bodyParser);
 app.use(access);
 
