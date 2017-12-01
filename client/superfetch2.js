@@ -33,7 +33,6 @@ function superfetch(url, type, success, fail, settings) {
     function badstuff(error) {
 
         if (fail != undefined) {
-            //fail(error);
             
             fail(error);
         }
