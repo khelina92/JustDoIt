@@ -5,6 +5,8 @@
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.0",
     "package.json": "^2.0.1",
     "pg": "^7.4.0",
     "sha256": "^0.2.0"
